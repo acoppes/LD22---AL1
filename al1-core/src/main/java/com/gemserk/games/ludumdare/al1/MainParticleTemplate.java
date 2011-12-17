@@ -35,6 +35,9 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 			int x = Gdx.input.getX();
 			int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
+			if (!Gdx.input.isTouched())
+				return;
+
 			position.set(x, y);
 
 			camera.unproject(position);
@@ -42,6 +45,8 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
 
 			spatialComponent.getSpatial().setPosition(position.x, position.y);
+
+			// PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
 		}
 
 	}
@@ -54,7 +59,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 						.circleShape(0.5f)) //
 				.type(BodyType.DynamicBody) //
 				.position(0f, 0f) //
-				.build();
+				.mass(10000f).build();
 
 		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new PhysicsComponent(body));

@@ -3,6 +3,7 @@ package com.gemserk.games.ludumdare.al1;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.artemis.WorldWrapper;
 import com.gemserk.commons.artemis.events.EventManager;
@@ -77,8 +78,11 @@ public class PlayGameState extends GameStateImpl {
 				.put("camera", worldCamera));
 
 		EntityTemplate enemyParticleTemplate = injector.getInstance(EnemyParticleTemplate.class);
-		entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
-				.put("spatial", new SpatialImpl(2.5f, 0f, 1f, 1f, 0f)));
+
+		for (int i = 0; i < 3; i++) {
+			entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
+					.put("spatial", new SpatialImpl(MathUtils.random(-10f, 10f), MathUtils.random(-10f, 10f), 1f, 1f, 0f)));
+		}
 
 	}
 

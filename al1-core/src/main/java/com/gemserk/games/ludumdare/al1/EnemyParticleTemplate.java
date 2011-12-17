@@ -55,6 +55,8 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 
 		Body body = bodyBuilder //
 				.fixture(bodyBuilder.fixtureDefBuilder() //
+						.categoryBits(Collisions.Enemy) //
+						.maskBits(Collisions.Main) //
 						.circleShape(0.25f)) //
 				.type(BodyType.DynamicBody) //
 				.position(spatial.getX(), spatial.getY()) //

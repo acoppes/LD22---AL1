@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
@@ -20,9 +21,9 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	BodyBuilder bodyBuilder;
 
 	public static class MovementScript extends ScriptJavaImpl {
-		
+
 		private final Vector2 position = new Vector2();
-		
+
 		Libgdx2dCamera camera;
 
 		public MovementScript(Libgdx2dCamera camera) {
@@ -33,13 +34,13 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		public void update(World world, Entity e) {
 			int x = Gdx.input.getX();
 			int y = Gdx.graphics.getHeight() - Gdx.input.getY();
-			
-			position.set(x,y);
-			
+
+			position.set(x, y);
+
 			camera.unproject(position);
-			
+
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
-			
+
 			spatialComponent.getSpatial().setPosition(position.x, position.y);
 		}
 
@@ -51,14 +52,14 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		Body body = bodyBuilder //
 				.fixture(bodyBuilder.fixtureDefBuilder() //
 						.circleShape(0.5f)) //
+				.type(BodyType.DynamicBody) //
 				.position(0f, 0f) //
 				.build();
 
 		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
-		
-		
+
 		Libgdx2dCamera camera = parameters.get("camera");
 		entity.addComponent(new ScriptComponent(new MovementScript(camera)));
 

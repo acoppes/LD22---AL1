@@ -23,6 +23,7 @@ import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
+import com.gemserk.commons.gdx.games.SpatialImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
 
@@ -30,7 +31,7 @@ public class PlayGameState extends GameStateImpl {
 
 	Libgdx2dCamera worldCamera;
 	Injector injector;
-	
+
 	WorldWrapper scene;
 
 	@Override
@@ -72,8 +73,13 @@ public class PlayGameState extends GameStateImpl {
 		scene.init();
 
 		EntityTemplate mainParticleTemplate = injector.getInstance(MainParticleTemplate.class);
+		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper() //
+				.put("camera", worldCamera));
 
-		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper().put("camera", worldCamera));
+		EntityTemplate enemyParticleTemplate = injector.getInstance(EnemyParticleTemplate.class);
+		entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
+				.put("spatial", new SpatialImpl(2.5f, 0f, 1f, 1f, 0f)));
+
 	}
 
 	@Override

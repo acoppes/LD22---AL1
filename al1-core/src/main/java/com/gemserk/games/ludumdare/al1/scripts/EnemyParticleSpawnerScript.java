@@ -54,7 +54,7 @@ public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 		entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
 				.put("spatial", new SpatialImpl(spatial.getX() + position.x, spatial.getY() + position.y, 1f, 1f, 0f)));
 
-		spawnTime = MathUtils.random(5f, 15f);
+		spawnTime = MathUtils.random(2f, 8f);
 	}
 
 }

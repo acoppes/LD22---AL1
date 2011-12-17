@@ -28,6 +28,10 @@ public class BounceWhenCollideScript extends ScriptJavaImpl {
 		
 		for (int i = 0; i < contacts.getContactCount(); i++) {
 			Contact contact = contacts.getContact(i);
+			
+			if (contact.getOtherFixture().isSensor())
+				continue;
+			
 			Vector2 normal = contact.getNormal();
 			
 			impulse.set(normal);

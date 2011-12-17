@@ -52,6 +52,15 @@ public class ShieldTemplate extends EntityTemplateImpl {
 
 		@Override
 		public void update(World world, Entity e) {
+			
+			Entity target = world.getTagManager().getEntity(Tags.MainCharacter);
+
+			if (target == null)
+				return;
+			
+			ShieldComponent shieldComponent = Components.getShieldComponent(target);
+			if (!shieldComponent.enabled)
+				return;
 
 			PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
 			Contacts contacts = physicsComponent.getContact();
@@ -62,9 +71,9 @@ public class ShieldTemplate extends EntityTemplateImpl {
 			for (int i = 0; i < contacts.getContactCount(); i++) {
 
 				Contact contact = contacts.getContact(i);
-				Entity target = (Entity) contact.getOtherFixture().getBody().getUserData();
+				Entity enemy = (Entity) contact.getOtherFixture().getBody().getUserData();
 
-				target.delete();
+				enemy.delete();
 
 			}
 

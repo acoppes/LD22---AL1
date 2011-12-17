@@ -108,8 +108,8 @@ public class ShieldTemplate extends EntityTemplateImpl {
 		FollowMouseMovementScript followMouseMovementScript = injector.getInstance(FollowMouseMovementScript.class);
 
 		entity.addComponent(new ScriptComponent(followMouseMovementScript, //
-				injector.getInstance(RenderWhenShieldEnabledScript.class), //
-				injector.getInstance(RemoveCollidingEnemiesScript.class) //
+				injector.getInstance(RenderWhenShieldEnabledScript.class) //
+//				injector.getInstance(RemoveCollidingEnemiesScript.class) //
 		));
 	}
 

@@ -127,6 +127,7 @@ public class PlayGameState extends GameStateImpl {
 			public void onEvent(Event event) {
 				new TransitionBuilder(game, game.gameOverScreen) //
 						.disposeCurrent() //
+						.restartScreen() //
 						.parameter("score", (long) score)
 						.start();
 			}

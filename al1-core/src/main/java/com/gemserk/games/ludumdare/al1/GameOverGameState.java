@@ -16,12 +16,16 @@ public class GameOverGameState extends GameStateImpl {
 
 	SpriteBatch spriteBatch;
 	BitmapFont font;
+	
+	Long score;
 
 	@Override
 	public void init() {
 
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
+		
+		score = getParameters().get("score");
 
 	}
 
@@ -42,7 +46,9 @@ public class GameOverGameState extends GameStateImpl {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		spriteBatch.begin();
-		SpriteBatchUtils.drawMultilineTextCentered(spriteBatch, font, "Game over, touch to play again", Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+		SpriteBatchUtils.drawMultilineTextCentered(spriteBatch, font, "Game over", Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.6f);
+		SpriteBatchUtils.drawMultilineTextCentered(spriteBatch, font, "Your score was " + score + ", touch to play again", 
+				Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		spriteBatch.end();
 	}
 

@@ -4,7 +4,6 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.artemis.WorldWrapper;
 import com.gemserk.commons.artemis.components.ScriptComponent;
@@ -30,10 +29,10 @@ import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
-import com.gemserk.commons.gdx.games.SpatialImpl;
 import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
+import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
 
 public class PlayGameState extends GameStateImpl {
@@ -53,7 +52,7 @@ public class PlayGameState extends GameStateImpl {
 
 		normalCamera = new Libgdx2dCameraTransformImpl(0f, 0f);
 		normalCamera.zoom(1f);
-		
+
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(48f);
 
@@ -100,12 +99,12 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper() //
 				.put("camera", worldCamera));
 
-		EntityTemplate enemyParticleTemplate = injector.getInstance(EnemyParticleTemplate.class);
-
-		for (int i = 0; i < 3; i++) {
-			entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
-					.put("spatial", new SpatialImpl(MathUtils.random(-10f, 10f), MathUtils.random(-10f, 10f), 1f, 1f, 0f)));
-		}
+		entityFactory.instantiate(new EntityTemplateImpl() {
+			@Override
+			public void apply(Entity entity) {
+				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
+			}
+		});
 
 		eventManager.register(Events.GameOver, new EventListener() {
 			@Override
@@ -127,7 +126,7 @@ public class PlayGameState extends GameStateImpl {
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		scene.render();
-		
+
 		normalCamera.apply();
 
 		// ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());

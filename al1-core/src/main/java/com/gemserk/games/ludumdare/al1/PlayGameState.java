@@ -87,7 +87,7 @@ public class PlayGameState extends GameStateImpl {
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 		scene.addRenderSystem(new RenderScriptSystem());
 
-		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
+		// scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
 
 		scene.init();
 

@@ -14,6 +14,7 @@ import com.gemserk.commons.artemis.events.EventManagerImpl;
 import com.gemserk.commons.artemis.render.RenderLayers;
 import com.gemserk.commons.artemis.systems.CameraUpdateSystem;
 import com.gemserk.commons.artemis.systems.EventManagerWorldSystem;
+import com.gemserk.commons.artemis.systems.LimitLinearVelocitySystem;
 import com.gemserk.commons.artemis.systems.PhysicsSystem;
 import com.gemserk.commons.artemis.systems.ReflectionRegistratorEventSystem;
 import com.gemserk.commons.artemis.systems.RenderLayerSpriteBatchImpl;
@@ -75,6 +76,8 @@ public class PlayGameState extends GameStateImpl {
 		scene.addUpdateSystem(new TagSystem());
 		scene.addUpdateSystem(new ReflectionRegistratorEventSystem(eventManager));
 		scene.addUpdateSystem(new PhysicsSystem(physicsWorld));
+		
+		scene.addUpdateSystem(new LimitLinearVelocitySystem(physicsWorld));
 
 		scene.addUpdateSystem(injector.getInstance(EventManagerWorldSystem.class));
 

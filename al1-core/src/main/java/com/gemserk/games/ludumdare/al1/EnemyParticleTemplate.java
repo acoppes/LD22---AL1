@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
@@ -40,9 +41,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 			force.set(spatial.getX(), spatial.getY());
 			force.sub(targetSpatial.getX(), targetSpatial.getY());
 
-			force.nor();
-
-			force.mul(-10f);
+			force.mul(-5f);
 
 			physicsComponent.getBody().applyForceToCenter(force);
 		}
@@ -65,6 +64,8 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
+		entity.addComponent(new LinearVelocityLimitComponent(15f));
+		
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent(new FollowMainCharacterScript()));
 	}

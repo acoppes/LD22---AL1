@@ -15,9 +15,11 @@ public class GameResources extends LibgdxResourceBuilder {
 	}
 
 	public static class Sprites {
-		
+
 		public static final String MainParticle = "MainParticleSprite";
 		public static final String EnemyParticle = "EnemyParticleSprite";
+
+		public static final String Shield = "ShieldSprite";
 
 	}
 
@@ -32,16 +34,10 @@ public class GameResources extends LibgdxResourceBuilder {
 		super(resourceManager);
 
 		textureAtlas(TextureAtlases.Images, "data/images/pack");
-		
-		resource(Sprites.MainParticle, sprite2() //
-				.textureAtlas(TextureAtlases.Images, "al1") //
-		);
 
-		resource(Sprites.EnemyParticle, sprite2() //
-				.textureAtlas(TextureAtlases.Images, "al2") //
-		);
-
+		resource(Sprites.MainParticle, sprite2().textureAtlas(TextureAtlases.Images, "al1"));
+		resource(Sprites.EnemyParticle, sprite2().textureAtlas(TextureAtlases.Images, "al2"));
+		resource(Sprites.Shield, sprite2().textureAtlas(TextureAtlases.Images, "shield"));
 
 	}
 }
-

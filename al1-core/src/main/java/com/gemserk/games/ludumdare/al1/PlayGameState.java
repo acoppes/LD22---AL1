@@ -12,7 +12,6 @@ import com.gemserk.commons.artemis.events.EventListener;
 import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.events.EventManagerImpl;
 import com.gemserk.commons.artemis.render.RenderLayers;
-import com.gemserk.commons.artemis.systems.CameraUpdateSystem;
 import com.gemserk.commons.artemis.systems.EventManagerWorldSystem;
 import com.gemserk.commons.artemis.systems.LimitLinearVelocitySystem;
 import com.gemserk.commons.artemis.systems.PhysicsSystem;
@@ -81,7 +80,6 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addUpdateSystem(injector.getInstance(EventManagerWorldSystem.class));
 
-		scene.addRenderSystem(new CameraUpdateSystem());
 		scene.addRenderSystem(new SpriteUpdateSystem());
 
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
@@ -100,6 +98,10 @@ public class PlayGameState extends GameStateImpl {
 
 		EntityTemplate mainParticleTemplate = injector.getInstance(MainParticleTemplate.class);
 		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper() //
+				.put("camera", worldCamera));
+		
+		EntityTemplate shieldTemplate = injector.getInstance(ShieldTemplate.class);
+		entityFactory.instantiate(shieldTemplate, new ParametersWrapper() //
 				.put("camera", worldCamera));
 
 		entityFactory.instantiate(new EntityTemplateImpl() {

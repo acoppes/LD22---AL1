@@ -9,7 +9,7 @@ import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.games.ludumdare.al1.Events;
 
 public class GameLogicScript extends ScriptJavaImpl {
-	
+
 	EventManager eventManager;
 
 	@Override
@@ -21,18 +21,18 @@ public class GameLogicScript extends ScriptJavaImpl {
 			}
 		});
 	}
-	
+
 	@Override
 	public void update(World world, Entity e) {
-		
+
 	}
-	
+
 	public void onMainParticleExploded(World world, Entity e, Event event) {
-		Entity mainParticle = (Entity) event.getSource();
-		
-		mainParticle.delete();
-		
+//		Entity mainParticle = (Entity) event.getSource();
+
+		// mainParticle.delete();
+
 		eventManager.registerEvent(Events.GameOver, e);
 	}
-	
+
 }

@@ -31,6 +31,7 @@ public class GameOverGameState extends GameStateImpl {
 		if (Gdx.input.justTouched()) {
 			new TransitionBuilder(game, game.playScreen) //
 					.disposeCurrent() //
+					.restartScreen()//
 					.start();
 		}
 

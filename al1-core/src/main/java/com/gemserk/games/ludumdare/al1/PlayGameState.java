@@ -44,12 +44,16 @@ public class PlayGameState extends GameStateImpl {
 	Libgdx2dCamera worldCamera;
 
 	WorldWrapper scene;
+	Libgdx2dCamera normalCamera;
 
 	@Override
 	public void init() {
 
 		final Injector injector = this.injector.createChildInjector();
 
+		normalCamera = new Libgdx2dCameraTransformImpl(0f, 0f);
+		normalCamera.zoom(1f);
+		
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(48f);
 
@@ -123,6 +127,9 @@ public class PlayGameState extends GameStateImpl {
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		scene.render();
+		
+		normalCamera.apply();
+
 		// ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
 	}
 

@@ -2,6 +2,7 @@ package com.gemserk.games.ludumdare.al1;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -64,7 +65,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(15f));
+		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(10f, 15f)));
 		
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent(new FollowMainCharacterScript()));

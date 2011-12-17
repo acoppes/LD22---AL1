@@ -61,6 +61,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 				.type(BodyType.DynamicBody) //
 				.position(spatial.getX(), spatial.getY()) //
 				.angle(spatial.getAngle()) //
+				.userData(entity) //
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));

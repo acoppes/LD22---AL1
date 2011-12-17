@@ -9,6 +9,8 @@ import com.gemserk.commons.gdx.Screen;
 import com.gemserk.commons.gdx.ScreenImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.reflection.InjectorImpl;
+import com.gemserk.resources.ResourceManager;
+import com.gemserk.resources.ResourceManagerImpl;
 
 public class Game extends com.gemserk.commons.gdx.Game {
 
@@ -21,10 +23,15 @@ public class Game extends com.gemserk.commons.gdx.Game {
 		
 		Converters.register(Color.class, LibgdxConverters.color());
 		Converters.register(Vector2.class, LibgdxConverters.vector2());
+		
+		ResourceManager<String> resourceManager = new ResourceManagerImpl<String>();
+		
+		GameResources.load(resourceManager);
 
 		Injector injector = new InjectorImpl();
 		
 		injector.bind("game", this);
+		injector.bind("resourceManager", resourceManager);
 
 		GameState playGameState = injector.getInstance(PlayGameState.class);
 		GameState gameOverState = injector.getInstance(GameOverGameState.class);

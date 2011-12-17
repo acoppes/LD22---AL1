@@ -65,7 +65,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(10f, 15f)));
+		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(7f, 15f)));
 		
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent(new FollowMainCharacterScript()));

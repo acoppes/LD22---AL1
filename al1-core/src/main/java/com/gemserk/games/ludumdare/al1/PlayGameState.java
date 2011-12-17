@@ -2,8 +2,11 @@ package com.gemserk.games.ludumdare.al1;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.artemis.WorldWrapper;
 import com.gemserk.commons.artemis.components.ScriptComponent;
@@ -26,11 +29,14 @@ import com.gemserk.commons.artemis.templates.EntityFactoryImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplate;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.GameStateImpl;
+import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
+import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.reflection.Injector;
+import com.gemserk.commons.text.CustomDecimalFormat;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
@@ -44,6 +50,11 @@ public class PlayGameState extends GameStateImpl {
 
 	WorldWrapper scene;
 	Libgdx2dCamera normalCamera;
+	
+	float score;
+	SpriteBatch spriteBatch;
+	BitmapFont font;
+	private CustomDecimalFormat customDecimalFormat;
 
 	@Override
 	public void init() {
@@ -116,15 +127,27 @@ public class PlayGameState extends GameStateImpl {
 			public void onEvent(Event event) {
 				new TransitionBuilder(game, game.gameOverScreen) //
 						.disposeCurrent() //
+						.parameter("score", score)
 						.start();
 			}
 		});
 
+		score = 0;
+		
+		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
+		
+		customDecimalFormat = new CustomDecimalFormat(5);
 	}
 
 	@Override
 	public void update() {
 		scene.update(getDeltaInMs());
+		
+		ImmutableBag<Entity> enemies = scene.getWorld().getGroupManager().getEntities(Tags.EnemyCharacter);
+
+		score += GlobalTime.getDelta() * enemies.size();
+		
 	}
 
 	@Override
@@ -134,6 +157,10 @@ public class PlayGameState extends GameStateImpl {
 
 		normalCamera.apply();
 
+		spriteBatch.begin();
+		SpriteBatchUtils.drawMultilineText(spriteBatch, font, customDecimalFormat.format((long) score), 20f, Gdx.graphics.getHeight() * 0.95f, 0f, 0.5f);
+		spriteBatch.end();
+		
 		// ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
 	}
 

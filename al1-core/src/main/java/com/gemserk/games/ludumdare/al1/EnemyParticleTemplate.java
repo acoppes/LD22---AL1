@@ -44,6 +44,8 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 
 		spatial.setSize(0.5f, 0.5f);
 
+		entity.setGroup(Tags.EnemyCharacter);
+		
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(7f, 15f)));
 

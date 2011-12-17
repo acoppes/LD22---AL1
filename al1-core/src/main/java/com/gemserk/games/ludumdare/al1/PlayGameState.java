@@ -2,12 +2,14 @@ package com.gemserk.games.ludumdare.al1;
 
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.artemis.WorldWrapper;
 import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.events.EventManagerImpl;
 import com.gemserk.commons.artemis.render.RenderLayers;
 import com.gemserk.commons.artemis.systems.CameraUpdateSystem;
+import com.gemserk.commons.artemis.systems.PhysicsSystem;
 import com.gemserk.commons.artemis.systems.ReflectionRegistratorEventSystem;
 import com.gemserk.commons.artemis.systems.RenderLayerSpriteBatchImpl;
 import com.gemserk.commons.artemis.systems.RenderableSystem;
@@ -22,12 +24,14 @@ import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
 import com.gemserk.commons.reflection.Injector;
+import com.gemserk.componentsengine.utils.ParametersWrapper;
 
 public class PlayGameState extends GameStateImpl {
 
 	Libgdx2dCamera worldCamera;
 	Injector injector;
-	private WorldWrapper scene;
+	
+	WorldWrapper scene;
 
 	@Override
 	public void init() {
@@ -55,6 +59,7 @@ public class PlayGameState extends GameStateImpl {
 		scene.addUpdateSystem(new ScriptSystem());
 		scene.addUpdateSystem(new TagSystem());
 		scene.addUpdateSystem(new ReflectionRegistratorEventSystem(eventManager));
+		scene.addUpdateSystem(new PhysicsSystem(physicsWorld));
 
 		scene.addRenderSystem(new CameraUpdateSystem());
 		scene.addRenderSystem(new SpriteUpdateSystem());
@@ -68,23 +73,19 @@ public class PlayGameState extends GameStateImpl {
 
 		EntityTemplate mainParticleTemplate = injector.getInstance(MainParticleTemplate.class);
 
-		entityFactory.instantiate(mainParticleTemplate);
+		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper().put("camera", worldCamera));
 	}
 
 	@Override
 	public void update() {
-		
 		scene.update(getDeltaInMs());
-
 	}
 
 	@Override
 	public void render() {
-		
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		scene.render();
-		
 		// ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
-
 	}
 
 }

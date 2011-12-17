@@ -44,7 +44,7 @@ public class DesktopApplication {
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		config.title = "Arielsan's Ludumdare 22 - AL1";
+		config.title = "Arielsan's Ludumdare 22 - Leave me alone!!";
 		config.width = arguments.width;
 		config.height = arguments.height;
 		config.fullscreen = false;

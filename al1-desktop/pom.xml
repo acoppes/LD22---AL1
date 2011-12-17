@@ -18,8 +18,8 @@
 	<url>http://blog.gemserk.com</url>
 
 	<properties>
-		<webstartName>Arielsan's Ludumdare 22 - Al1</webstartName>
-		<webstartDescription>Arielsan's Ludumdare 22 - Al1</webstartDescription>
+		<webstartName>Arielsan's Ludumdare 22 - Leave me alone!!</webstartName>
+		<webstartDescription>Arielsan's Ludumdare 22 - Leave me alone!!</webstartDescription>
 		<webstartCodebase>http://www.gemserk.com/prototipos/${project.parent.artifactId}-latest/</webstartCodebase>
 
 		<!-- finalName>${project.artifactId}-${project.version}</finalName -->

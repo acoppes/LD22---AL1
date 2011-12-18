@@ -23,6 +23,7 @@ import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
+import com.gemserk.games.ludumdare.al1.scripts.AliveTimeScript;
 import com.gemserk.games.ludumdare.al1.scripts.BounceWhenCollideScript;
 import com.gemserk.resources.ResourceManager;
 
@@ -76,7 +77,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		}
 
 	}
-
+	
 	@Override
 	public void apply(Entity entity) {
 		Spatial spatial = parameters.get("spatial");
@@ -103,6 +104,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //
 				injector.getInstance(FixedMovementScript.class), //
+				injector.getInstance(AliveTimeScript.class), //
 				injector.getInstance(BounceWhenCollideScript.class) //
 		));
 
@@ -118,6 +120,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.addComponent(spriteComponent);
 		entity.addComponent(new RenderableComponent(1));
 
+		entity.addComponent(new AliveComponent(MathUtils.random(10f, 15f)));
 		entity.addComponent(new FollowRandomTargetComponent());
 	}
 }

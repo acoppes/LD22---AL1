@@ -61,7 +61,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
 		
-		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.MainParticle);
+		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al1);
 		entity.addComponent(new SpriteComponent(sprite));
 		entity.addComponent(new RenderableComponent(0));
 

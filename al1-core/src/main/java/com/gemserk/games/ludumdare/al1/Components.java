@@ -13,5 +13,12 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 		return shieldComponentClass.cast(e.getComponent(shieldComponentType));
 	}
 
+	public static final Class<SpawnerComponent> spawnerComponentClass = SpawnerComponent.class;
+	public static final ComponentType spawnerComponentType = ComponentTypeManager.getTypeFor(spawnerComponentClass);
+	
+	public static SpawnerComponent getSpawnerComponent(Entity e) {
+		return spawnerComponentClass.cast(e.getComponent(spawnerComponentType));
+	}
+	
 }
 

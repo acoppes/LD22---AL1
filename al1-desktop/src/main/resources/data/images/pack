@@ -1,26 +1,33 @@
 
 images1.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 shield
   rotate: false
   xy: 0, 0
-  size: 96, 100
-  orig: 96, 100
+  size: 185, 193
+  orig: 185, 193
   offset: 0, 0
   index: -1
 al1
   rotate: false
-  xy: 0, 100
-  size: 55, 57
-  orig: 55, 57
+  xy: 0, 193
+  size: 106, 110
+  orig: 106, 110
   offset: 0, 0
   index: -1
 al2
   rotate: false
-  xy: 55, 100
-  size: 23, 24
-  orig: 23, 24
+  xy: 185, 0
+  size: 44, 46
+  orig: 44, 46
+  offset: 0, 0
+  index: -1
+al3
+  rotate: false
+  xy: 185, 46
+  size: 44, 46
+  orig: 44, 46
   offset: 0, 0
   index: -1

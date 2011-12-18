@@ -126,7 +126,7 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
-				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(4, 8), 5f));
+				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(3, 6), 5f));
 				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
 			}
 		});
@@ -134,7 +134,7 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
-				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(3, 5), 2f));
+				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(2, 4), 2f));
 				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
 			}
 		});

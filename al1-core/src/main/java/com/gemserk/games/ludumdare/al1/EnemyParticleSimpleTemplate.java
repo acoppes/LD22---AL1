@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
+import com.gemserk.animation4j.transitions.Transitions;
+import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
@@ -28,6 +31,8 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 	Injector injector;
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
+	
+	Synchronizer synchronizer;
 
 	public static class FixedMovementScript extends ScriptJavaImpl {
 
@@ -102,7 +107,15 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		));
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al3);
-		entity.addComponent(new SpriteComponent(sprite));
+		
+		SpriteComponent spriteComponent = new SpriteComponent(sprite);
+
+		synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
+				.start(1f, 1f, 1f, 0f) //
+				.end(0.5f, 1f, 1f, 1f, 1f) //
+				.build());
+		
+		entity.addComponent(spriteComponent);
 		entity.addComponent(new RenderableComponent(1));
 
 		entity.addComponent(new FollowRandomTargetComponent());

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.WorldWrapper;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.events.Event;
@@ -55,12 +56,16 @@ public class PlayGameState extends GameStateImpl {
 	float score;
 	SpriteBatch spriteBatch;
 	BitmapFont font;
-	private CustomDecimalFormat customDecimalFormat;
+	CustomDecimalFormat customDecimalFormat;
+	
+	Synchronizer synchronizer;
 
 	@Override
 	public void init() {
 
 		final Injector injector = this.injector.createChildInjector();
+		
+		synchronizer = new Synchronizer();
 
 		normalCamera = new Libgdx2dCameraTransformImpl(0f, 0f);
 		normalCamera.zoom(1f);
@@ -82,6 +87,7 @@ public class PlayGameState extends GameStateImpl {
 		injector.bind("eventManager", eventManager);
 		injector.bind("physicsWorld", physicsWorld);
 		injector.bind("bodyBuilder", new BodyBuilder(physicsWorld));
+		injector.bind("synchronizer", synchronizer);
 
 		scene.addUpdateSystem(new ScriptSystem());
 		scene.addUpdateSystem(new TagSystem());
@@ -153,6 +159,7 @@ public class PlayGameState extends GameStateImpl {
 
 	@Override
 	public void update() {
+		synchronizer.synchronize(getDelta());
 		scene.update(getDeltaInMs());
 		
 		ImmutableBag<Entity> enemies = scene.getWorld().getGroupManager().getEntities(Tags.EnemyCharacter);

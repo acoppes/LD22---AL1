@@ -20,5 +20,13 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 		return spawnerComponentClass.cast(e.getComponent(spawnerComponentType));
 	}
 	
+	public static final Class<FollowRandomTargetComponent> followRandomTargetComponentClass = FollowRandomTargetComponent.class;
+	public static final ComponentType followRandomTargetComponentType = ComponentTypeManager.getTypeFor(followRandomTargetComponentClass);
+	
+	public static FollowRandomTargetComponent getFollowRandomTargetComponent(Entity e) {
+		return followRandomTargetComponentClass.cast(e.getComponent(followRandomTargetComponentType));
+	}
+	
+	
 }
 

@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
@@ -26,14 +27,42 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 	Injector injector;
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
-	
+
 	public static class FixedMovementScript extends ScriptJavaImpl {
-		
+
+		private final Vector2 position = new Vector2();
+		private final Vector2 force = new Vector2();
+
+		@Override
+		public void init(World world, Entity e) {
+			FollowRandomTargetComponent followRandomTargetComponent = Components.getFollowRandomTargetComponent(e);
+			followRandomTargetComponent.position.set(MathUtils.random(-5f, 5f), MathUtils.random(-5f, 5f));
+		}
+
 		@Override
 		public void update(World world, Entity e) {
-			
+			FollowRandomTargetComponent followRandomTargetComponent = Components.getFollowRandomTargetComponent(e);
+
+			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
+			Spatial spatial = spatialComponent.getSpatial();
+
+			position.set(spatial.getX(), spatial.getY());
+
+			if (followRandomTargetComponent.position.dst(position) < 1f) {
+				followRandomTargetComponent.position.set(MathUtils.random(-5f, 5f), MathUtils.random(-5f, 5f));
+			} else {
+				PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
+				
+				force.set(spatial.getX(), spatial.getY());
+				force.sub(followRandomTargetComponent.position.x, followRandomTargetComponent.position.y);
+
+				force.mul(-3f);
+
+				physicsComponent.getBody().applyForceToCenter(force);
+			}
+
 		}
-		
+
 	}
 
 	@Override
@@ -55,18 +84,20 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		spatial.setSize(0.5f, 0.5f);
 
 		entity.setGroup(Tags.EnemyCharacter);
-		
+
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(5f, 10f)));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //
-				injector.getInstance(FixedMovementScript.class) , //
+				injector.getInstance(FixedMovementScript.class), //
 				injector.getInstance(BounceWhenCollideScript.class) //
 		));
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al3);
 		entity.addComponent(new SpriteComponent(sprite));
 		entity.addComponent(new RenderableComponent(1));
+
+		entity.addComponent(new FollowRandomTargetComponent());
 	}
 }

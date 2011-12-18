@@ -15,6 +15,7 @@ import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
+import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
@@ -45,6 +46,12 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
 			Spatial spatial = spatialComponent.getSpatial();
+			
+			SpriteComponent spriteComponent = Components.getSpriteComponent(e);
+			spriteComponent.setUpdateRotation(false);
+			
+			Sprite sprite = spriteComponent.getSprite();
+			sprite.setRotation(sprite.getRotation() + GlobalTime.getDelta() * -90f);
 
 			position.set(spatial.getX(), spatial.getY());
 

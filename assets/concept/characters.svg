@@ -179,7 +179,7 @@
 <dc:format>image/svg+xml</dc:format>
 <dc:type
  rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-<dc:title />
+<dc:title></dc:title>
 </cc:Work>
 </rdf:RDF>
 </metadata>
@@ -232,7 +232,10 @@
  style="fill:#0066ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
  d="M 272.313,36.6779 C 272.313,49.2461 262.518,59.4343 250.434,59.4343 238.349,59.4343 228.554,49.2461 228.554,36.6779 228.554,24.1099 238.349,13.9217 250.434,13.9217 262.518,13.9217 272.313,24.1099 272.313,36.6779 z"
  id="path3109"
- inkscape:connector-curvature="0" />
+ inkscape:connector-curvature="0"
+ inkscape:export-filename="/home/acoppes/workspace/al1/assets/images/al2.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
 <path
  sodipodi:type="arc"
  style="fill:url(#radialGradient3201);fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter4773)"
@@ -250,29 +253,44 @@
  style="fill:#00aa44;fill-opacity:1;fill-rule:nonzero;stroke:none"
  d="M 272.784,107.293 C 272.784,119.861 262.989,130.049 250.903,130.049 238.82,130.049 229.025,119.861 229.025,107.293 229.025,94.724 238.82,84.536 250.903,84.536 262.989,84.536 272.784,94.724 272.784,107.293 z"
  id="path3010"
- inkscape:connector-curvature="0" />
+ inkscape:connector-curvature="0"
+ inkscape:export-filename="/home/acoppes/workspace/al1/assets/images/al3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
 <path
  style="fill:url(#radialGradient3819);fill-opacity:1;fill-rule:nonzero;stroke:none"
  d="M 268.776,107.164 C 268.776,117.403 260.795,125.704 250.95,125.704 241.103,125.704 233.124,117.403 233.124,107.164 233.124,96.925 241.103,88.624 250.95,88.624 260.795,88.624 268.776,96.925 268.776,107.164 z"
  id="path3012"
- inkscape:connector-curvature="0" />
+ inkscape:connector-curvature="0"
+ inkscape:export-filename="/home/acoppes/workspace/al1/assets/images/al3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
 <path
  inkscape:connector-curvature="0"
  id="path3790"
  d="M 268.853,36.9192 C 268.853,47.4886 260.613,56.0566 250.452,56.0566 240.288,56.0566 232.051,47.4886 232.051,36.9192 232.051,26.3497 240.288,17.7818 250.452,17.7818 260.613,17.7818 268.853,26.3497 268.853,36.9192 z"
- style="fill:url(#radialGradient3798);fill-opacity:1;fill-rule:nonzero;stroke:none" />
+ style="fill:url(#radialGradient3798);fill-opacity:1;fill-rule:nonzero;stroke:none"
+ inkscape:export-filename="/home/acoppes/workspace/al1/assets/images/al2.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
 <path
  style="fill:#0062f7;fill-opacity:1;fill-rule:nonzero;stroke:none"
  d="M 238.117,51.3794 250.662,41.4879 250.662,41.4275 263.207,51.3189 250.66,20.4687 z"
  id="path3800"
  inkscape:connector-curvature="0"
- sodipodi:nodetypes="cccccc" />
+ sodipodi:nodetypes="cccccc"
+ inkscape:export-filename="/home/acoppes/workspace/al1/assets/images/al2.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
 <path
  sodipodi:nodetypes="ccccccccc"
  inkscape:connector-curvature="0"
  id="path3826"
  d="M 236.204,94.888 240.607,119.013 250.498,111.806 260.39,119.074 264.854,94.948 258.099,107.493 250.529,103.302 242.959,107.433 z"
- style="fill:#00943a;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+ style="fill:#00943a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ inkscape:export-filename="/home/acoppes/workspace/al1/assets/images/al3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
 <path
  style="fill:#00943a;fill-opacity:1;fill-rule:nonzero;stroke:none"
  d="M 244.799,177.223 C 242.772,177.223 241.178,178.877 241.178,180.902 241.178,182.929 242.772,184.581 244.799,184.581 245.216,184.581 246.295,184.168 246.667,184.038 L 255.835,190.191 254.87,199.66 C 252.932,199.756 251.554,201.316 251.554,203.279 251.554,205.303 253.206,206.957 255.233,206.957 257.257,206.957 258.911,205.303 258.911,203.279 258.911,201.652 257.844,200.26 256.379,199.78 L 257.344,190.552 266.39,186.873 C 267.027,187.956 268.239,188.682 269.586,188.682 271.613,188.682 273.205,187.03 273.205,185.003 273.205,182.979 271.613,181.325 269.586,181.325 267.562,181.325 266.027,183.521 266.027,185.546 L 256.8,189.164 247.933,182.892 C 248.302,182.321 248.477,181.632 248.477,180.902 248.477,178.877 246.823,177.223 244.799,177.223 z"

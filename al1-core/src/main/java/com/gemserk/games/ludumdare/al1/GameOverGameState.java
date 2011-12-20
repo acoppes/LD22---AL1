@@ -51,5 +51,11 @@ public class GameOverGameState extends GameStateImpl {
 				Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		spriteBatch.end();
 	}
+	
+	@Override
+	public void resume() {
+		Gdx.input.setCatchBackKey(false);		
+	}
+
 
 }

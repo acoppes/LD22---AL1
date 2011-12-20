@@ -182,5 +182,10 @@ public class PlayGameState extends GameStateImpl {
 		
 		// ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
 	}
+	
+	@Override
+	public void resume() {
+		Gdx.input.setCatchBackKey(false);		
+	}
 
 }

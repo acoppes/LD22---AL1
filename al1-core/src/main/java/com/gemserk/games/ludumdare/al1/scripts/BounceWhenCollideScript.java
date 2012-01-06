@@ -9,7 +9,7 @@ import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.gdx.box2d.Contacts;
 import com.gemserk.commons.gdx.box2d.Contacts.Contact;
 import com.gemserk.commons.gdx.games.Physics;
-import com.gemserk.games.ludumdare.al1.Components;
+import com.gemserk.games.ludumdare.al1.components.Components;
 
 public class BounceWhenCollideScript extends ScriptJavaImpl {
 	

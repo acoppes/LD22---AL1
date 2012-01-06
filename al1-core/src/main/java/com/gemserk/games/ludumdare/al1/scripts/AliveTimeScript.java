@@ -8,8 +8,8 @@ import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.gdx.GlobalTime;
-import com.gemserk.games.ludumdare.al1.AliveComponent;
-import com.gemserk.games.ludumdare.al1.Components;
+import com.gemserk.games.ludumdare.al1.components.AliveComponent;
+import com.gemserk.games.ludumdare.al1.components.Components;
 
 public class AliveTimeScript extends ScriptJavaImpl {
 	

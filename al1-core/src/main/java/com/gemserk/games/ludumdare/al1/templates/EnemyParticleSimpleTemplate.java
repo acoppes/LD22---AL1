@@ -1,4 +1,4 @@
-package com.gemserk.games.ludumdare.al1;
+package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -23,6 +23,13 @@ import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
+import com.gemserk.games.ludumdare.al1.Collisions;
+import com.gemserk.games.ludumdare.al1.GameResources;
+import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.GameResources.Sprites;
+import com.gemserk.games.ludumdare.al1.components.AliveComponent;
+import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.FollowRandomTargetComponent;
 import com.gemserk.games.ludumdare.al1.scripts.AliveTimeScript;
 import com.gemserk.games.ludumdare.al1.scripts.BounceWhenCollideScript;
 import com.gemserk.resources.ResourceManager;

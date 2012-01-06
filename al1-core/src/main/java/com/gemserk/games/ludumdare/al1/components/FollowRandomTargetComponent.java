@@ -1,4 +1,4 @@
-package com.gemserk.games.ludumdare.al1;
+package com.gemserk.games.ludumdare.al1.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector2;

@@ -1,4 +1,4 @@
-package com.gemserk.games.ludumdare.al1;
+package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -20,6 +20,11 @@ import com.gemserk.commons.gdx.camera.CameraImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
+import com.gemserk.games.ludumdare.al1.Collisions;
+import com.gemserk.games.ludumdare.al1.GameResources;
+import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.ShieldComponent;
 import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript;
 import com.gemserk.resources.ResourceManager;
 

@@ -40,8 +40,12 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.text.CustomDecimalFormat;
 import com.gemserk.componentsengine.utils.Interval;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
+import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
+import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
+import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
+import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
 
 public class PlayGameState extends GameStateImpl {
 
@@ -101,7 +105,6 @@ public class PlayGameState extends GameStateImpl {
 		scene.addRenderSystem(new SpriteUpdateSystem());
 
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
-		scene.addRenderSystem(new RenderScriptSystem());
 
 		// scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
 

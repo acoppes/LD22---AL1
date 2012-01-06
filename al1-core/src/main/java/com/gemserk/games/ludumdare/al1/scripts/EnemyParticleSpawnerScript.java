@@ -13,9 +13,9 @@ import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialImpl;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
-import com.gemserk.games.ludumdare.al1.Components;
-import com.gemserk.games.ludumdare.al1.SpawnerComponent;
 import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
 
 public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 

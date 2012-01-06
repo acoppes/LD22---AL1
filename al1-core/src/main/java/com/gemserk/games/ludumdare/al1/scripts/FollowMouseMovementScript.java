@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.artemis.components.CameraComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
-import com.gemserk.games.ludumdare.al1.Components;
+import com.gemserk.games.ludumdare.al1.components.Components;
 
 public class FollowMouseMovementScript extends ScriptJavaImpl {
 

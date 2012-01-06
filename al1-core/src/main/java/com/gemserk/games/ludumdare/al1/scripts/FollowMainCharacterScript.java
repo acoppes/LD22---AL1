@@ -10,8 +10,8 @@ import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.games.Spatial;
-import com.gemserk.games.ludumdare.al1.Components;
 import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.components.Components;
 
 public class FollowMainCharacterScript extends ScriptJavaImpl {
 

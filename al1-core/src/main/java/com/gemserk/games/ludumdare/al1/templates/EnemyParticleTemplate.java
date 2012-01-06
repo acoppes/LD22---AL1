@@ -31,8 +31,6 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
 
-	// Synchronizer synchronizer;
-
 	@Override
 	public void apply(Entity entity) {
 		Spatial spatial = parameters.get("spatial");
@@ -41,7 +39,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 				.fixture(bodyBuilder.fixtureDefBuilder() //
 						// .restitution(1f) //
 						.categoryBits(Collisions.Enemy) //
-						.maskBits(Collisions.All) //
+						.maskBits(Collisions.None) //
 						.circleShape(0.25f)) //
 				.type(BodyType.DynamicBody) //
 				.position(spatial.getX(), spatial.getY()) //
@@ -65,11 +63,6 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al2);
 		SpriteComponent spriteComponent = new SpriteComponent(sprite);
-
-		// synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
-		// .start(1f, 1f, 1f, 0f) //
-		// .end(0.5f, 1f, 1f, 1f, 1f) //
-		// .build());
 
 		entity.addComponent(new AliveComponent(MathUtils.random(8f, 13f)));
 		entity.addComponent(spriteComponent);

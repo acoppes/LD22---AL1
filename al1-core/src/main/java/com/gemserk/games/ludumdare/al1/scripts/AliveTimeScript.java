@@ -1,13 +1,20 @@
 package com.gemserk.games.ludumdare.al1.scripts;
 
+import java.util.ArrayList;
+
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
 import com.gemserk.animation4j.transitions.Transitions;
 import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.gdx.GlobalTime;
+import com.gemserk.commons.gdx.games.Physics;
+import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent.State;
 import com.gemserk.games.ludumdare.al1.components.Components;
@@ -40,8 +47,8 @@ public class AliveTimeScript extends ScriptJavaImpl {
 
 			if (aliveComponent.spawnTime <= 0) {
 				aliveComponent.state = State.Alive;
-				
-				// enable collisions
+				Physics physics = Components.getPhysicsComponent(e).getPhysics();
+				setFilter(physics.getBody(), Collisions.Enemy, Collisions.All);
 			}
 
 			return;
@@ -59,11 +66,25 @@ public class AliveTimeScript extends ScriptJavaImpl {
 						.start(1f, 1f, 1f, 1f) //
 						.end(aliveComponent.dyingTime, 1f, 1f, 1f, 0f) //
 						.build());
+				
+				Physics physics = Components.getPhysicsComponent(e).getPhysics();
+				setFilter(physics.getBody(), Collisions.Enemy, Collisions.None);
 			}
 		} else {
 			aliveComponent.dyingTime -= GlobalTime.getDelta();
 			if (aliveComponent.dyingTime <= 0f)
 				e.delete();
+		}
+	}
+
+	private void setFilter(Body body, short categoryBits, short maskBits) {
+		ArrayList<Fixture> fixtureList = body.getFixtureList();
+		for (int i = 0; i < fixtureList.size(); i++) {
+			Fixture fixture = fixtureList.get(i);
+			Filter filter = fixture.getFilterData();
+			filter.categoryBits = categoryBits;
+			filter.maskBits = maskBits;
+			fixture.setFilterData(filter);
 		}
 	}
 

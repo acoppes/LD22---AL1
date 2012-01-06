@@ -37,8 +37,6 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
 
-	// Synchronizer synchronizer;
-
 	public static class FixedMovementScript extends ScriptJavaImpl {
 
 		private final Vector2 position = new Vector2();
@@ -90,7 +88,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 				.fixture(bodyBuilder.fixtureDefBuilder() //
 						// .restitution(1f) //
 						.categoryBits(Collisions.Enemy) //
-						.maskBits(Collisions.All) //
+						.maskBits(Collisions.None) //
 						.circleShape(0.25f)) //
 				.type(BodyType.DynamicBody) //
 				.position(spatial.getX(), spatial.getY()) //
@@ -115,11 +113,6 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al3);
 
 		SpriteComponent spriteComponent = new SpriteComponent(sprite);
-
-		// synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
-		// .start(1f, 1f, 1f, 0f) //
-		// .end(0.5f, 1f, 1f, 1f, 1f) //
-		// .build());
 
 		entity.addComponent(new PropertiesComponent());
 

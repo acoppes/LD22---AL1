@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.RemoteInput;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.CameraComponent;
@@ -23,6 +25,7 @@ import com.gemserk.commons.gdx.camera.CameraImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
+import com.gemserk.commons.gdx.math.MathUtils2;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Controller;
@@ -52,32 +55,21 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	// }
 	//
 	// }
-
+	
 	public static class TeleportScript extends ScriptJavaImpl {
+		
+		Rectangle bounds = new Rectangle(-8.5f, -5.5f, 17f, 11f);
+		Vector2 position = new Vector2();
 
 		@Override
 		public void update(World world, Entity e) {
 			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-
-			float x = spatial.getX();
-			float y = spatial.getY();
-
-			float newX = x;
-			float newY = y;
-
-			float width = 17f;
-			float height = 11f;
-
-			if (x < -width * 0.5f)
-				newX = width * 0.5f;
-			if (x > width * 0.5f)
-				newX = -width * 0.5f;
-			if (y > height * 0.5f)
-				newY = -height * 0.5f;
-			if (y < -height * 0.5f)
-				newY = height * 0.5f;
-
-			spatial.setPosition(newX, newY);
+			
+			position.set(spatial.getX(), spatial.getY());
+			
+			MathUtils2.truncate(position, bounds);
+			
+			spatial.setPosition(position.x, position.y);
 		}
 
 	}

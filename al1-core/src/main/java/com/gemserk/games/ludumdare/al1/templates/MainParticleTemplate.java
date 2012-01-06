@@ -30,8 +30,8 @@ import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.components.ShieldComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
-import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript2;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
+import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.resources.ResourceManager;
 
 public class MainParticleTemplate extends EntityTemplateImpl {
@@ -65,7 +65,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(15f));
+		entity.addComponent(new LinearVelocityLimitComponent(10f));
 		
 		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
@@ -81,7 +81,8 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new ControllerComponent(new Controller()));
 
 		entity.addComponent(new ScriptComponent( //
-				injector.getInstance(FollowMouseMovementScript2.class), //
+//				injector.getInstance(FollowMouseMovementScript2.class), //
+				new StickControllerScript(Gdx.input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class) //
 		));

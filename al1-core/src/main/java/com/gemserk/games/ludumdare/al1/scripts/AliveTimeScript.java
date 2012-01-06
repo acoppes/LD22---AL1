@@ -27,7 +27,7 @@ public class AliveTimeScript extends ScriptJavaImpl {
 	public void init(World world, Entity e) {
 		AliveComponent aliveComponent = Components.getAliveComponent(e);
 		aliveComponent.state = State.Spawning;
-		aliveComponent.spawnTime = 0.5f;
+		aliveComponent.spawnTime = 1f;
 		aliveComponent.dyingTime = 1f;
 		// start the transition here?
 		

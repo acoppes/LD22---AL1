@@ -1,10 +1,9 @@
 package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
-import com.artemis.World;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.input.RemoteInput;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.CameraComponent;
@@ -15,7 +14,6 @@ import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.components.TagComponent;
-import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.CameraImpl;
@@ -26,9 +24,7 @@ import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Controller;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
-import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
-import com.gemserk.games.ludumdare.al1.components.ShieldComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
@@ -39,16 +35,18 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	BodyBuilder bodyBuilder;
 	Injector injector;
 	ResourceManager<String> resourceManager;
+	
+	RemoteInput remoteInput;
 
-	public static class ShieldScript extends ScriptJavaImpl {
-
-		@Override
-		public void update(World world, Entity e) {
-			ShieldComponent shieldComponent = Components.getShieldComponent(e);
-			shieldComponent.enabled = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
-		}
-
-	}
+	// public static class ShieldScript extends ScriptJavaImpl {
+	//
+	// @Override
+	// public void update(World world, Entity e) {
+	// ShieldComponent shieldComponent = Components.getShieldComponent(e);
+	// shieldComponent.enabled = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+	// }
+	//
+	// }
 
 	@Override
 	public void apply(Entity entity) {
@@ -65,8 +63,8 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(10f));
-		
+		entity.addComponent(new LinearVelocityLimitComponent(6f));
+
 		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
 
@@ -77,12 +75,15 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		Libgdx2dCamera camera = parameters.get("camera");
 
 		entity.addComponent(new CameraComponent(camera, new CameraImpl(0f, 0f, 1f, 0f)));
-		
+
 		entity.addComponent(new ControllerComponent(new Controller()));
 
+		Input input = remoteInput;
+		// Input input = Gdx.input;
+
 		entity.addComponent(new ScriptComponent( //
-//				injector.getInstance(FollowMouseMovementScript2.class), //
-				new StickControllerScript(Gdx.input), //
+				// injector.getInstance(FollowMouseMovementScript2.class), //
+				new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class) //
 		));

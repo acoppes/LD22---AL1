@@ -187,6 +187,7 @@ public class PlayGameState extends GameStateImpl {
 		
 //		ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
 		ImmediateModeRendererUtils.fillRectangle(95, 95, 105, 105, Color.WHITE);
+		ImmediateModeRendererUtils.drawSolidCircle(100f, 100f, 80f, Color.RED);
 	}
 	
 	@Override

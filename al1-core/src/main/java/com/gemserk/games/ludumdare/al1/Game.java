@@ -1,6 +1,7 @@
 package com.gemserk.games.ludumdare.al1;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.input.RemoteInput;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.animation4j.converters.Converters;
 import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
@@ -16,6 +17,8 @@ public class Game extends com.gemserk.commons.gdx.Game {
 
 	public Screen playScreen;
 	public Screen gameOverScreen;
+	
+	public RemoteInput remoteInput;
 
 	@Override
 	public void create() {
@@ -30,8 +33,11 @@ public class Game extends com.gemserk.commons.gdx.Game {
 
 		Injector injector = new InjectorImpl();
 		
+		remoteInput = new RemoteInput(8192);
+
 		injector.bind("game", this);
 		injector.bind("resourceManager", resourceManager);
+		injector.bind("remoteInput", remoteInput);
 
 		GameState playGameState = injector.getInstance(PlayGameState.class);
 		GameState gameOverState = injector.getInstance(GameOverGameState.class);
@@ -40,6 +46,15 @@ public class Game extends com.gemserk.commons.gdx.Game {
 		gameOverScreen = new ScreenImpl(gameOverState);
 		
 		setScreen(playScreen);
+
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				remoteInput.run();				
+//			}
+//		});
+		
 	}
 
 }

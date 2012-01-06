@@ -7,11 +7,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
-import com.gemserk.animation4j.transitions.Transitions;
-import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
+import com.gemserk.commons.artemis.components.PropertiesComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
@@ -38,8 +36,8 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 	Injector injector;
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
-	
-	Synchronizer synchronizer;
+
+	// Synchronizer synchronizer;
 
 	public static class FixedMovementScript extends ScriptJavaImpl {
 
@@ -58,10 +56,10 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
 			Spatial spatial = spatialComponent.getSpatial();
-			
+
 			SpriteComponent spriteComponent = Components.getSpriteComponent(e);
 			spriteComponent.setUpdateRotation(false);
-			
+
 			Sprite sprite = spriteComponent.getSprite();
 			sprite.setRotation(sprite.getRotation() + GlobalTime.getDelta() * -90f);
 
@@ -71,7 +69,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 				followRandomTargetComponent.position.set(MathUtils.random(-5f, 5f), MathUtils.random(-5f, 5f));
 			} else {
 				PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
-				
+
 				force.set(spatial.getX(), spatial.getY());
 				force.sub(followRandomTargetComponent.position.x, followRandomTargetComponent.position.y);
 
@@ -83,7 +81,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		}
 
 	}
-	
+
 	@Override
 	public void apply(Entity entity) {
 		Spatial spatial = parameters.get("spatial");
@@ -115,14 +113,16 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		));
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al3);
-		
+
 		SpriteComponent spriteComponent = new SpriteComponent(sprite);
 
-		synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
-				.start(1f, 1f, 1f, 0f) //
-				.end(0.5f, 1f, 1f, 1f, 1f) //
-				.build());
-		
+		// synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
+		// .start(1f, 1f, 1f, 0f) //
+		// .end(0.5f, 1f, 1f, 1f, 1f) //
+		// .build());
+
+		entity.addComponent(new PropertiesComponent());
+
 		entity.addComponent(spriteComponent);
 		entity.addComponent(new RenderableComponent(1));
 

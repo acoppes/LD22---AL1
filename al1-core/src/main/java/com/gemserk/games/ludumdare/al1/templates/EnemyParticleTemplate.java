@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
-import com.gemserk.animation4j.transitions.Transitions;
-import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
@@ -34,8 +31,8 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
 
-	Synchronizer synchronizer;
-	
+	// Synchronizer synchronizer;
+
 	@Override
 	public void apply(Entity entity) {
 		Spatial spatial = parameters.get("spatial");
@@ -55,7 +52,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		spatial.setSize(0.5f, 0.5f);
 
 		entity.setGroup(Tags.EnemyCharacter);
-		
+
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(3.5f, 7.5f)));
 
@@ -63,16 +60,16 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new ScriptComponent( //
 				injector.getInstance(FollowMainCharacterScript.class), //
 				injector.getInstance(AliveTimeScript.class), //
-				injector.getInstance(BounceWhenCollideScript.class) //
+				injector.getInstance(BounceWhenCollideScript.class)//
 		));
-		
+
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al2);
 		SpriteComponent spriteComponent = new SpriteComponent(sprite);
 
-		synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
-				.start(1f, 1f, 1f, 0f) //
-				.end(0.5f, 1f, 1f, 1f, 1f) //
-				.build());
+		// synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
+		// .start(1f, 1f, 1f, 0f) //
+		// .end(0.5f, 1f, 1f, 1f, 1f) //
+		// .build());
 
 		entity.addComponent(new AliveComponent(MathUtils.random(8f, 13f)));
 		entity.addComponent(spriteComponent);

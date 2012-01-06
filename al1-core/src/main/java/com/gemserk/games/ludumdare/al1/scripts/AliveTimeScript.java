@@ -9,32 +9,61 @@ import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
+import com.gemserk.games.ludumdare.al1.components.AliveComponent.State;
 import com.gemserk.games.ludumdare.al1.components.Components;
 
 public class AliveTimeScript extends ScriptJavaImpl {
-	
+
 	Synchronizer synchronizer;
+
+	@Override
+	public void init(World world, Entity e) {
+		AliveComponent aliveComponent = Components.getAliveComponent(e);
+		aliveComponent.state = State.Spawning;
+		aliveComponent.spawnTime = 0.5f;
+		aliveComponent.dyingTime = 1f;
+		// start the transition here?
+		
+		SpriteComponent spriteComponent = Components.getSpriteComponent(e);
+		synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
+				.start(1f, 1f, 1f, 0f) //
+				.end(aliveComponent.spawnTime, 1f, 1f, 1f, 1f) //
+				.build());
+	}
 
 	@Override
 	public void update(World world, Entity e) {
 		AliveComponent aliveComponent = Components.getAliveComponent(e);
-		
-		aliveComponent.time -= GlobalTime.getDelta();
-		
-		if (aliveComponent.time <= 1f && !aliveComponent.dying) {
-			aliveComponent.dying = true;
-			
-			SpriteComponent spriteComponent = Components.getSpriteComponent(e);
 
-			synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
-					.start(1f, 1f, 1f, 1f) //
-					.end(1f, 1f, 1f, 1f, 0f) //
-					.build());
-			
-		}
-		
-		if (aliveComponent.time <= 0f) {
-			e.delete();
+		if (aliveComponent.state == State.Spawning) {
+			aliveComponent.spawnTime -= GlobalTime.getDelta();
+
+			if (aliveComponent.spawnTime <= 0) {
+				aliveComponent.state = State.Alive;
+				
+				// enable collisions
+			}
+
+			return;
+		} else if (aliveComponent.state == State.Alive) {
+
+			aliveComponent.time -= GlobalTime.getDelta();
+
+			if (aliveComponent.time <= 0f) {
+				// e.delete();
+				aliveComponent.state = State.Dying;
+
+				SpriteComponent spriteComponent = Components.getSpriteComponent(e);
+
+				synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
+						.start(1f, 1f, 1f, 1f) //
+						.end(aliveComponent.dyingTime, 1f, 1f, 1f, 0f) //
+						.build());
+			}
+		} else {
+			aliveComponent.dyingTime -= GlobalTime.getDelta();
+			if (aliveComponent.dyingTime <= 0f)
+				e.delete();
 		}
 	}
 

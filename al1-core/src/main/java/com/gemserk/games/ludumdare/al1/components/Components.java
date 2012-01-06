@@ -34,5 +34,12 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 		return aliveComponentClass.cast(e.getComponent(aliveComponentType));
 	}
 	
+	public static final Class<ControllerComponent> controllerComponentClass = ControllerComponent.class;
+	public static final ComponentType controllerComponentType = ComponentTypeManager.getTypeFor(controllerComponentClass);
+	
+	public static ControllerComponent getControllerComponent(Entity e) {
+		return controllerComponentClass.cast(e.getComponent(controllerComponentType));
+	}
+	
 }
 

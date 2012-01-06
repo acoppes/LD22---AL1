@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.CameraComponent;
+import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
 import com.gemserk.commons.artemis.components.ScriptComponent;
@@ -22,13 +23,15 @@ import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
+import com.gemserk.games.ludumdare.al1.Controller;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
-import com.gemserk.games.ludumdare.al1.GameResources.Sprites;
 import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.components.ShieldComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
-import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript;
+import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript2;
+import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
 import com.gemserk.resources.ResourceManager;
 
 public class MainParticleTemplate extends EntityTemplateImpl {
@@ -57,12 +60,14 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 						.circleShape(0.5f)) //
 				.type(BodyType.DynamicBody) //
 				.position(0f, 0f) //
-				.mass(10f) //
+				.mass(1f) //
 				.userData(entity) //
 				.build();
 
-		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new PhysicsComponent(body));
+		entity.addComponent(new LinearVelocityLimitComponent(15f));
+		
+		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al1);
@@ -72,9 +77,13 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		Libgdx2dCamera camera = parameters.get("camera");
 
 		entity.addComponent(new CameraComponent(camera, new CameraImpl(0f, 0f, 1f, 0f)));
+		
+		entity.addComponent(new ControllerComponent(new Controller()));
 
-		entity.addComponent(new ScriptComponent(injector.getInstance(FollowMouseMovementScript.class), //
-				injector.getInstance(ExplodeWhenCollideScript.class)
+		entity.addComponent(new ScriptComponent( //
+				injector.getInstance(FollowMouseMovementScript2.class), //
+				injector.getInstance(ExplodeWhenCollideScript.class), //
+				injector.getInstance(MovementScript.class) //
 		));
 
 		// entity.addComponent(new ControllerComponent(new Controller()));

@@ -26,7 +26,6 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
-import com.gemserk.games.ludumdare.al1.GameResources.Sprites;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.FollowRandomTargetComponent;
@@ -106,7 +105,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.setGroup(Tags.EnemyCharacter);
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(5f, 10f)));
+		entity.addComponent(new LinearVelocityLimitComponent(MathUtils.random(2.5f, 5f)));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //

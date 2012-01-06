@@ -27,15 +27,11 @@ public class FollowMouseMovementScript2 extends ScriptJavaImpl {
 		cameraComponent.getLibgdx2dCamera().unproject(direction);
 
 		direction.sub(spatial.getX(), spatial.getY());
-		// position.nor();
 
-		if (direction.len() < 1f)
+		if (direction.len() < 0.5f)
 			direction.set(0f, 0f);
 
 		controller.direction.set(direction);
-
-		// SpatialComponent spatialComponent = Components.getSpatialComponent(e);
-		// spatialComponent.getSpatial().setPosition(position.x, position.y);
 	}
 
 }

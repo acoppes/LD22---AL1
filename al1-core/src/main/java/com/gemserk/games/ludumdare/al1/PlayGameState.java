@@ -72,12 +72,14 @@ public class PlayGameState extends GameStateImpl {
 		final Injector injector = this.injector.createChildInjector();
 		
 		synchronizer = new Synchronizer();
+		
+		float gameZoom = Gdx.graphics.getHeight() / 480f;
 
 		normalCamera = new Libgdx2dCameraTransformImpl(0f, 0f);
-		normalCamera.zoom(1f);
+		normalCamera.zoom(1f * gameZoom);
 
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
-		worldCamera.zoom(48f);
+		worldCamera.zoom(48f * gameZoom);
 
 		RenderLayers renderLayers = new RenderLayers();
 

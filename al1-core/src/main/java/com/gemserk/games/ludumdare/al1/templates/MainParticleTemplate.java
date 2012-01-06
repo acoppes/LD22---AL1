@@ -1,6 +1,8 @@
 package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
+import com.artemis.World;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.RemoteInput;
@@ -14,16 +16,19 @@ import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.components.TagComponent;
+import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.CameraImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
+import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Controller;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
@@ -35,7 +40,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	BodyBuilder bodyBuilder;
 	Injector injector;
 	ResourceManager<String> resourceManager;
-	
+
 	RemoteInput remoteInput;
 
 	// public static class ShieldScript extends ScriptJavaImpl {
@@ -47,6 +52,35 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	// }
 	//
 	// }
+
+	public static class TeleportScript extends ScriptJavaImpl {
+
+		@Override
+		public void update(World world, Entity e) {
+			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+
+			float x = spatial.getX();
+			float y = spatial.getY();
+
+			float newX = x;
+			float newY = y;
+
+			float width = 17f;
+			float height = 11f;
+
+			if (x < -width * 0.5f)
+				newX = width * 0.5f;
+			if (x > width * 0.5f)
+				newX = -width * 0.5f;
+			if (y > height * 0.5f)
+				newY = -height * 0.5f;
+			if (y < -height * 0.5f)
+				newY = height * 0.5f;
+
+			spatial.setPosition(newX, newY);
+		}
+
+	}
 
 	@Override
 	public void apply(Entity entity) {
@@ -78,14 +112,15 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 
 		entity.addComponent(new ControllerComponent(new Controller()));
 
-		Input input = remoteInput;
-		// Input input = Gdx.input;
+		// Input input = remoteInput;
+		Input input = Gdx.input;
 
 		entity.addComponent(new ScriptComponent( //
 				// injector.getInstance(FollowMouseMovementScript2.class), //
 				new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
-				injector.getInstance(MovementScript.class) //
+				injector.getInstance(MovementScript.class), //
+				injector.getInstance(TeleportScript.class) //
 		));
 
 		// entity.addComponent(new ControllerComponent(new Controller()));

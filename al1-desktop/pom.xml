@@ -97,11 +97,6 @@
 			<version>${gdx.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.gemserk.datastore</groupId>
-			<artifactId>datastore-desktop</artifactId>
-			<version>${datastore.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.restfb</groupId>
 			<artifactId>restfb</artifactId>
 			<version>1.6.9</version>

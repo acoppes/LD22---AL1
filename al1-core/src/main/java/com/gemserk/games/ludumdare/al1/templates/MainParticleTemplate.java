@@ -2,10 +2,8 @@ package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.input.RemoteInput;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -44,7 +42,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	Injector injector;
 	ResourceManager<String> resourceManager;
 
-	RemoteInput remoteInput;
+	Input remoteInput;
 
 	// public static class ShieldScript extends ScriptJavaImpl {
 	//
@@ -104,8 +102,8 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 
 		entity.addComponent(new ControllerComponent(new Controller()));
 
-		// Input input = remoteInput;
-		Input input = Gdx.input;
+		 Input input = remoteInput;
+//		Input input = Gdx.input;
 
 		entity.addComponent(new ScriptComponent( //
 				// injector.getInstance(FollowMouseMovementScript2.class), //

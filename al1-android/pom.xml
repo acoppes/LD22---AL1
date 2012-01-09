@@ -248,11 +248,5 @@
 			<classifier>natives-armeabi-v7a</classifier>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.gemserk.datastore</groupId>
-			<artifactId>datastore-android</artifactId>
-			<version>${datastore.version}</version>
-		</dependency>
-
 	</dependencies>
 </project>

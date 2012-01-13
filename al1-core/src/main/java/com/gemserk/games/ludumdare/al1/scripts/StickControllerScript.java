@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
+import com.gemserk.componentsengine.input.AnalogInputMonitor;
 import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.games.ludumdare.al1.Controller;
@@ -16,8 +17,6 @@ public class StickControllerScript extends ScriptJavaImpl {
 	private final Vector2 tmp = new Vector2();
 	private final Vector2 newPosition = new Vector2();
 
-	private final Input input;
-
 	int touch = 0;
 
 	public Vector2 stickPosition = new Vector2();
@@ -25,19 +24,27 @@ public class StickControllerScript extends ScriptJavaImpl {
 	public float radius = 80f;
 
 	private ButtonMonitor pointerDownMonitor;
+	private AnalogInputMonitor pointerXCoordinateMonitor;
+	private AnalogInputMonitor pointerYCoordinateMonitor;
 
 	public StickControllerScript(Input input) {
-		this.input = input;
-		pointerDownMonitor = LibgdxInputMappingBuilder.pointerDownButtonMonitor(input, 0);
+		pointerDownMonitor = LibgdxInputMappingBuilder.anyPointerButtonMonitor(input);
+		
+		pointerXCoordinateMonitor = LibgdxInputMappingBuilder.anyPointerXCoordinateMonitor(input);
+		pointerYCoordinateMonitor = LibgdxInputMappingBuilder.anyPointerYCoordinateMonitor(input);
+
 		stickPosition.set(100, 100);
 	}
 
 	@Override
 	public void update(World world, Entity e) {
 		pointerDownMonitor.update();
+		
+		pointerXCoordinateMonitor.update();
+		pointerYCoordinateMonitor.update();
 
-		int x = input.getX();
-		int y = Gdx.graphics.getHeight() - input.getY();
+		float x = pointerXCoordinateMonitor.getValue();
+		float y = Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue();
 
 		tmp.set(0f, 0f);
 
@@ -65,10 +72,6 @@ public class StickControllerScript extends ScriptJavaImpl {
 				newPosition.add(stickPosition);
 
 				stickPosition.set(newPosition);
-
-//				tmp.nor();
-//				tmp.mul(radius);
-
 			}
 
 			if (tmp.len() > radius * 0.75f) {

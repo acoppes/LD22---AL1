@@ -66,17 +66,17 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 				stickPosition.set(newPosition);
 
-				tmp.nor();
-				tmp.mul(radius);
+//				tmp.nor();
+//				tmp.mul(radius);
 
 			}
 
-			// if (tmp.len() > radius * 0.5f) {
-			// tmp.nor();
-			// tmp.mul(radius * 0.5f);
-			// }
+			if (tmp.len() > radius * 0.75f) {
+				tmp.nor();
+				tmp.mul(radius * 0.75f);
+			}
 
-			tmp.mul(-1f * 0.1f * 0.15f);
+			tmp.mul(-1f * 0.1f * 0.2f);
 
 		}
 

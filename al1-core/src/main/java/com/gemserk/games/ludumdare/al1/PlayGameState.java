@@ -18,6 +18,7 @@ import com.gemserk.commons.artemis.events.EventListener;
 import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.events.EventManagerImpl;
 import com.gemserk.commons.artemis.render.RenderLayers;
+import com.gemserk.commons.artemis.scripts.Script;
 import com.gemserk.commons.artemis.systems.EventManagerWorldSystem;
 import com.gemserk.commons.artemis.systems.GroupSystem;
 import com.gemserk.commons.artemis.systems.LimitLinearVelocitySystem;
@@ -215,13 +216,13 @@ public class PlayGameState extends GameStateImpl {
 		Entity mainCharacter = scene.getWorld().getTagManager().getEntity(Tags.MainCharacter);
 		if (mainCharacter != null) {
 
-			StickControllerScript script = (StickControllerScript) Components.getScriptComponent(mainCharacter).getScripts().get(0);
+			Script script = Components.getScriptComponent(mainCharacter).getScripts().get(0);
 
-			if (script != null) {
-				Vector2 stickPosition = script.stickPosition;
-
+			if (script != null && script instanceof StickControllerScript) {
+				StickControllerScript stickControllerScript = (StickControllerScript) script;
+				Vector2 stickPosition = stickControllerScript.stickPosition;
 				ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
-				ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, script.radius, Color.RED);
+				ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
 			}
 			
 		}

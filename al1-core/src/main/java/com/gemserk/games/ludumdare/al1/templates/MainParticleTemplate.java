@@ -1,11 +1,8 @@
 package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
-import com.artemis.World;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.CameraComponent;
@@ -16,20 +13,16 @@ import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.components.TagComponent;
-import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.CameraImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
-import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
-import com.gemserk.commons.gdx.math.MathUtils2;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Controller;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
-import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
@@ -109,7 +102,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				// injector.getInstance(FollowMouseMovementScript2.class), //
 				new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
-				injector.getInstance(MovementScript.class), //
+				injector.getInstance(MovementScript.class) //
 //				injector.getInstance(TeleportScript.class) //
 		));
 

@@ -155,21 +155,21 @@ public class PlayGameState extends GameStateImpl {
 		});
 
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(0f, -6.5f, 10f, 2f, 0f)) //
+				.put("spatial", new SpatialImpl(0f, -6.75f, 10f, 2f, 0f)) //
 				.put("force", new Vector2(0f, 100f)) //
 				);
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(0f, 6.5f, 10f, 2f, 0f)) //
+				.put("spatial", new SpatialImpl(0f, 6.75f, 10f, 2f, 0f)) //
 				.put("force", new Vector2(0f, -100f)) //
 				);
 
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(-9.5f, 0f, 2f, 20f, 0f)) //
+				.put("spatial", new SpatialImpl(-10f, 0f, 2f, 20f, 0f)) //
 				.put("force", new Vector2(100f, 0f)) //
 				);
 
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(9.5f, 0f, 2f, 20f, 0f)) //
+				.put("spatial", new SpatialImpl(10f, 0f, 2f, 20f, 0f)) //
 				.put("force", new Vector2(-100f, 0f)) //
 				);
 

@@ -41,5 +41,12 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 		return controllerComponentClass.cast(e.getComponent(controllerComponentType));
 	}
 	
+	public static final Class<AreaForceComponent> areaForceComponentClass = AreaForceComponent.class;
+	public static final ComponentType areaForceComponentType = ComponentTypeManager.getTypeFor(areaForceComponentClass);
+	
+	public static AreaForceComponent getAreaForceComponent(Entity e) {
+		return areaForceComponentClass.cast(e.getComponent(areaForceComponentType));
+	}
+	
 }
 

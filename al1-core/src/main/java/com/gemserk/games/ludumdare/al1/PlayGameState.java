@@ -17,6 +17,7 @@ import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.events.EventManagerImpl;
 import com.gemserk.commons.artemis.render.RenderLayers;
 import com.gemserk.commons.artemis.systems.EventManagerWorldSystem;
+import com.gemserk.commons.artemis.systems.GroupSystem;
 import com.gemserk.commons.artemis.systems.LimitLinearVelocitySystem;
 import com.gemserk.commons.artemis.systems.PhysicsSystem;
 import com.gemserk.commons.artemis.systems.ReflectionRegistratorEventSystem;
@@ -34,6 +35,7 @@ import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
+import com.gemserk.commons.gdx.games.SpatialImpl;
 import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.reflection.Injector;
@@ -100,6 +102,7 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addUpdateSystem(new ScriptSystem());
 		scene.addUpdateSystem(new TagSystem());
+		scene.addUpdateSystem(new GroupSystem());
 		scene.addUpdateSystem(new ReflectionRegistratorEventSystem(eventManager));
 		scene.addUpdateSystem(new PhysicsSystem(physicsWorld));
 
@@ -146,7 +149,14 @@ public class PlayGameState extends GameStateImpl {
 			}
 		});
 
-		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class));
+		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
+				.put("spatial", new SpatialImpl(0f, -6.5f, 10f, 2f, 0f)) //
+				.put("force", new Vector2(0f, 100f)) //
+				);
+		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
+				.put("spatial", new SpatialImpl(0f, 6.5f, 10f, 2f, 0f)) //
+				.put("force", new Vector2(0f, -100f)) // 
+				);
 
 		eventManager.register(Events.GameOver, new EventListener() {
 			@Override
@@ -171,7 +181,7 @@ public class PlayGameState extends GameStateImpl {
 		synchronizer.synchronize(getDelta());
 		scene.update(getDeltaInMs());
 
-		ImmutableBag<Entity> enemies = scene.getWorld().getGroupManager().getEntities(Tags.EnemyCharacter);
+		ImmutableBag<Entity> enemies = scene.getWorld().getGroupManager().getEntities(Groups.EnemyCharacter);
 
 		score += GlobalTime.getDelta() * enemies.size();
 
@@ -188,8 +198,8 @@ public class PlayGameState extends GameStateImpl {
 		SpriteBatchUtils.drawMultilineText(spriteBatch, font, customDecimalFormat.format((long) score), 20f, Gdx.graphics.getHeight() * 0.95f, 0f, 0.5f);
 		spriteBatch.end();
 
-//		ImmediateModeRendererUtils.fillRectangle(95, 95, 105, 105, Color.WHITE);
-//		ImmediateModeRendererUtils.drawSolidCircle(100f, 100f, 80f, Color.RED);
+		// ImmediateModeRendererUtils.fillRectangle(95, 95, 105, 105, Color.WHITE);
+		// ImmediateModeRendererUtils.drawSolidCircle(100f, 100f, 80f, Color.RED);
 	}
 
 	@Override

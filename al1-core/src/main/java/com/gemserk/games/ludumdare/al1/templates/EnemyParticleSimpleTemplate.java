@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.gemserk.commons.artemis.components.GroupComponent;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.PropertiesComponent;
@@ -23,7 +24,7 @@ import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.GameResources;
-import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.Groups;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.FollowRandomTargetComponent;
@@ -98,7 +99,8 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 		spatial.setSize(0.5f, 0.5f);
 
-		entity.setGroup(Tags.EnemyCharacter);
+		// entity.setGroup(Groups.EnemyCharacter);
+		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));
 
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new LinearVelocityLimitComponent(0.5f * MathUtils.random(2.5f, 5f)));

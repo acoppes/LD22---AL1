@@ -54,23 +54,23 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	//
 	// }
 
-	public static class TeleportScript extends ScriptJavaImpl {
-
-		Rectangle bounds = new Rectangle(-8.5f, -5.5f, 17f, 11f);
-		Vector2 position = new Vector2();
-
-		@Override
-		public void update(World world, Entity e) {
-			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-
-			position.set(spatial.getX(), spatial.getY());
-
-			MathUtils2.truncate(position, bounds);
-
-			spatial.setPosition(position.x, position.y);
-		}
-
-	}
+	// public static class TeleportScript extends ScriptJavaImpl {
+	//
+	// Rectangle bounds = new Rectangle(-8.5f, -5.5f, 17f, 11f);
+	// Vector2 position = new Vector2();
+	//
+	// @Override
+	// public void update(World world, Entity e) {
+	// Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+	//
+	// position.set(spatial.getX(), spatial.getY());
+	//
+	// MathUtils2.truncate(position, bounds);
+	//
+	// spatial.setPosition(position.x, position.y);
+	// }
+	//
+	// }
 
 	@Override
 	public void apply(Entity entity) {
@@ -110,7 +110,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class), //
-				injector.getInstance(TeleportScript.class) //
+//				injector.getInstance(TeleportScript.class) //
 		));
 
 		// entity.addComponent(new ControllerComponent(new Controller()));

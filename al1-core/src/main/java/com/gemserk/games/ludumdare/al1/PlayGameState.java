@@ -213,20 +213,32 @@ public class PlayGameState extends GameStateImpl {
 		SpriteBatchUtils.drawMultilineText(spriteBatch, font, customDecimalFormat.format((long) score), 20f, Gdx.graphics.getHeight() * 0.95f, 0f, 0.5f);
 		spriteBatch.end();
 
+		renderMoveableStickOnScreen();
+
+	}
+
+	private void renderMoveableStickOnScreen() {
 		Entity mainCharacter = scene.getWorld().getTagManager().getEntity(Tags.MainCharacter);
-		if (mainCharacter != null) {
 
-			Script script = Components.getScriptComponent(mainCharacter).getScripts().get(0);
+		if (mainCharacter == null)
+			return;
 
-			if (script != null && script instanceof StickControllerScript) {
-				StickControllerScript stickControllerScript = (StickControllerScript) script;
-				Vector2 stickPosition = stickControllerScript.stickPosition;
-				ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
-				ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
-			}
-			
-		}
+		Script script = Components.getScriptComponent(mainCharacter).getScripts().get(0);
 
+		if (script == null)
+			return;
+
+		if (!(script instanceof StickControllerScript))
+			return;
+
+		StickControllerScript stickControllerScript = (StickControllerScript) script;
+
+		if (!stickControllerScript.moving)
+			return;
+
+		Vector2 stickPosition = stickControllerScript.stickPosition;
+		ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
+		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
 	}
 
 	@Override

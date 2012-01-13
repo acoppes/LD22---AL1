@@ -35,8 +35,6 @@ public class FollowMainCharacterScript extends ScriptJavaImpl {
 		Sprite sprite = spriteComponent.getSprite();
 		sprite.setRotation(sprite.getRotation() + GlobalTime.getDelta() * 90f);
 		
-		//spatial.setAngle(spatial.getAngle() +  GlobalTime.getDelta() * 0.1f);
-		
 		Entity target = world.getTagManager().getEntity(Tags.MainCharacter);
 
 		if (target == null)

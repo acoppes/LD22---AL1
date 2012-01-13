@@ -4,6 +4,6 @@ public class Tags {
 
 	public static final String MainCharacter = "MainCharacter";
 	
-	public static final String EnemyCharacter = "EnemyCharacter";
+	public static final String EnemyCharacter = Groups.EnemyCharacter;
 
 }

@@ -32,8 +32,8 @@ import com.gemserk.games.ludumdare.al1.Tags;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
+import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript2;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
-import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.resources.ResourceManager;
 
 public class MainParticleTemplate extends EntityTemplateImpl {
@@ -53,20 +53,20 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 	// }
 	//
 	// }
-	
+
 	public static class TeleportScript extends ScriptJavaImpl {
-		
+
 		Rectangle bounds = new Rectangle(-8.5f, -5.5f, 17f, 11f);
 		Vector2 position = new Vector2();
 
 		@Override
 		public void update(World world, Entity e) {
 			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-			
+
 			position.set(spatial.getX(), spatial.getY());
-			
+
 			MathUtils2.truncate(position, bounds);
-			
+
 			spatial.setPosition(position.x, position.y);
 		}
 
@@ -102,12 +102,12 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 
 		entity.addComponent(new ControllerComponent(new Controller()));
 
-		 Input input = remoteInput;
-//		Input input = Gdx.input;
+		Input input = remoteInput;
+		// Input input = Gdx.input;
 
 		entity.addComponent(new ScriptComponent( //
-				// injector.getInstance(FollowMouseMovementScript2.class), //
-				new StickControllerScript(input), //
+				injector.getInstance(FollowMouseMovementScript2.class), //
+				// new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class), //
 				injector.getInstance(TeleportScript.class) //

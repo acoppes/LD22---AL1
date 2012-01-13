@@ -38,8 +38,6 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 		Controller controller = Components.getControllerComponent(e).controller;
 		
-		System.out.println(x);
-		
 		if (pointerDownMonitor.isPressed()) {
 
 			tmp.set(100, 100);

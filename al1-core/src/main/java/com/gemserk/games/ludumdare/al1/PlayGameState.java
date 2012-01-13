@@ -4,7 +4,6 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,7 +34,6 @@ import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
-import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
 import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.reflection.Injector;
@@ -47,6 +45,7 @@ import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
+import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
 import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
 
 public class PlayGameState extends GameStateImpl {
@@ -58,21 +57,21 @@ public class PlayGameState extends GameStateImpl {
 
 	WorldWrapper scene;
 	Libgdx2dCamera normalCamera;
-	
+
 	float score;
 	SpriteBatch spriteBatch;
 	BitmapFont font;
 	CustomDecimalFormat customDecimalFormat;
-	
+
 	Synchronizer synchronizer;
 
 	@Override
 	public void init() {
 
 		final Injector injector = this.injector.createChildInjector();
-		
+
 		synchronizer = new Synchronizer();
-		
+
 		float gameZoom = Gdx.graphics.getHeight() / 480f;
 
 		normalCamera = new Libgdx2dCameraTransformImpl(0f, 0f);
@@ -91,17 +90,19 @@ public class PlayGameState extends GameStateImpl {
 		EntityFactory entityFactory = new EntityFactoryImpl(scene.getWorld());
 		EventManager eventManager = new EventManagerImpl();
 
+		final BodyBuilder bodyBuilder = new BodyBuilder(physicsWorld);
+
 		injector.bind("entityFactory", entityFactory);
 		injector.bind("eventManager", eventManager);
 		injector.bind("physicsWorld", physicsWorld);
-		injector.bind("bodyBuilder", new BodyBuilder(physicsWorld));
+		injector.bind("bodyBuilder", bodyBuilder);
 		injector.bind("synchronizer", synchronizer);
 
 		scene.addUpdateSystem(new ScriptSystem());
 		scene.addUpdateSystem(new TagSystem());
 		scene.addUpdateSystem(new ReflectionRegistratorEventSystem(eventManager));
 		scene.addUpdateSystem(new PhysicsSystem(physicsWorld));
-		
+
 		scene.addUpdateSystem(new LimitLinearVelocitySystem(physicsWorld));
 
 		scene.addUpdateSystem(injector.getInstance(EventManagerWorldSystem.class));
@@ -110,7 +111,7 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 
-		// scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
+		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
 
 		scene.init();
 
@@ -124,7 +125,6 @@ public class PlayGameState extends GameStateImpl {
 		EntityTemplate mainParticleTemplate = injector.getInstance(MainParticleTemplate.class);
 		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper() //
 				.put("camera", worldCamera));
-		
 
 		// EntityTemplate shieldTemplate = injector.getInstance(ShieldTemplate.class);
 		// entityFactory.instantiate(shieldTemplate, new ParametersWrapper() //
@@ -137,7 +137,7 @@ public class PlayGameState extends GameStateImpl {
 				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
 			}
 		});
-		
+
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
@@ -146,22 +146,23 @@ public class PlayGameState extends GameStateImpl {
 			}
 		});
 
+		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class));
+
 		eventManager.register(Events.GameOver, new EventListener() {
 			@Override
 			public void onEvent(Event event) {
 				new TransitionBuilder(game, game.gameOverScreen) //
 						.disposeCurrent() //
 						.restartScreen() //
-						.parameter("score", (long) score)
-						.start();
+						.parameter("score", (long) score).start();
 			}
 		});
 
 		score = 0;
-		
+
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
-		
+
 		customDecimalFormat = new CustomDecimalFormat(5);
 	}
 
@@ -169,11 +170,11 @@ public class PlayGameState extends GameStateImpl {
 	public void update() {
 		synchronizer.synchronize(getDelta());
 		scene.update(getDeltaInMs());
-		
+
 		ImmutableBag<Entity> enemies = scene.getWorld().getGroupManager().getEntities(Tags.EnemyCharacter);
 
 		score += GlobalTime.getDelta() * enemies.size();
-		
+
 	}
 
 	@Override
@@ -186,15 +187,14 @@ public class PlayGameState extends GameStateImpl {
 		spriteBatch.begin();
 		SpriteBatchUtils.drawMultilineText(spriteBatch, font, customDecimalFormat.format((long) score), 20f, Gdx.graphics.getHeight() * 0.95f, 0f, 0.5f);
 		spriteBatch.end();
-		
-//		ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
-		ImmediateModeRendererUtils.fillRectangle(95, 95, 105, 105, Color.WHITE);
-		ImmediateModeRendererUtils.drawSolidCircle(100f, 100f, 80f, Color.RED);
+
+//		ImmediateModeRendererUtils.fillRectangle(95, 95, 105, 105, Color.WHITE);
+//		ImmediateModeRendererUtils.drawSolidCircle(100f, 100f, 80f, Color.RED);
 	}
-	
+
 	@Override
 	public void resume() {
-		Gdx.input.setCatchBackKey(false);		
+		Gdx.input.setCatchBackKey(false);
 	}
 
 }

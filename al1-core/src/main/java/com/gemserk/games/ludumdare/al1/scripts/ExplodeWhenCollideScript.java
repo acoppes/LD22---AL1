@@ -22,9 +22,9 @@ public class ExplodeWhenCollideScript extends ScriptJavaImpl {
 		if (!contact.isInContact())
 			return;
 		
-		eventManager.registerEvent(Events.MainExploded, e);
 		
-		System.out.println(eventManager);
+		
+		eventManager.registerEvent(Events.MainExploded, e);
 	}
 
 }

@@ -17,14 +17,17 @@ public class StickControllerScript extends ScriptJavaImpl {
 	private final Input input;
 	
 	int touch = 0;
-
-	private boolean moving = false;
+	
+	public Vector2 stickPosition = new Vector2();
+	public boolean moving = false;
+	public float radius = 80f;
+	
 	private ButtonMonitor pointerDownMonitor;
 
 	public StickControllerScript(Input input) {
 		this.input = input;
-		
 		pointerDownMonitor = LibgdxInputMappingBuilder.pointerDownButtonMonitor(input, 0);
+		stickPosition.set(100, 100);
 	}
 
 	@Override
@@ -40,10 +43,10 @@ public class StickControllerScript extends ScriptJavaImpl {
 		
 		if (pointerDownMonitor.isPressed()) {
 
-			tmp.set(100, 100);
+			tmp.set(stickPosition.x, stickPosition.y);
 			tmp.sub(x, y);
 
-			if (tmp.len() < 80f) {
+			if (tmp.len() < radius) {
 				moving = true;
 			} else {
 				tmp.set(0,0);
@@ -59,12 +62,12 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 		if (moving) {
 
-			tmp.set(100, 100);
+			tmp.set(stickPosition.x, stickPosition.y);
 			tmp.sub(x, y);
 
-			if (tmp.len() > 40f) {
+			if (tmp.len() > radius * 0.5f) {
 				tmp.nor();
-				tmp.mul(40f);
+				tmp.mul(radius * 0.5f);
 			}
 
 			tmp.mul(-1f * 0.1f * 0.5f);

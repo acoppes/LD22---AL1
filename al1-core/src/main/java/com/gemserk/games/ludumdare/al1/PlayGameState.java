@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.WorldWrapper;
+import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.events.Event;
 import com.gemserk.commons.artemis.events.EventListener;
@@ -47,6 +48,7 @@ import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
+import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
@@ -210,8 +212,20 @@ public class PlayGameState extends GameStateImpl {
 		SpriteBatchUtils.drawMultilineText(spriteBatch, font, customDecimalFormat.format((long) score), 20f, Gdx.graphics.getHeight() * 0.95f, 0f, 0.5f);
 		spriteBatch.end();
 
-		ImmediateModeRendererUtils.fillRectangle(95, 95, 105, 105, Color.WHITE);
-		ImmediateModeRendererUtils.drawSolidCircle(100f, 100f, 80f, Color.RED);
+		Entity mainCharacter = scene.getWorld().getTagManager().getEntity(Tags.MainCharacter);
+		if (mainCharacter != null) {
+
+			StickControllerScript script = (StickControllerScript) Components.getScriptComponent(mainCharacter).getScripts().get(0);
+
+			if (script != null) {
+				Vector2 stickPosition = script.stickPosition;
+
+				ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
+				ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, script.radius, Color.RED);
+			}
+			
+		}
+
 	}
 
 	@Override

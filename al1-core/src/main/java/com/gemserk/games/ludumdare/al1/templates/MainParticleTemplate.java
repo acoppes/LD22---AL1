@@ -32,8 +32,8 @@ import com.gemserk.games.ludumdare.al1.Tags;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
-import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript2;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
+import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.resources.ResourceManager;
 
 public class MainParticleTemplate extends EntityTemplateImpl {
@@ -79,7 +79,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				.fixture(bodyBuilder.fixtureDefBuilder() //
 						.categoryBits(Collisions.Main) //
 						.maskBits(Collisions.All) //
-						.circleShape(0.5f)) //
+						.circleShape(0.4f)) //
 				.type(BodyType.DynamicBody) //
 				.position(0f, 0f) //
 				.mass(1f) //
@@ -87,7 +87,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(6f));
+		entity.addComponent(new LinearVelocityLimitComponent(0.5f * 6f));
 
 		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
@@ -106,8 +106,8 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		// Input input = Gdx.input;
 
 		entity.addComponent(new ScriptComponent( //
-				injector.getInstance(FollowMouseMovementScript2.class), //
-				// new StickControllerScript(input), //
+				// injector.getInstance(FollowMouseMovementScript2.class), //
+				new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class), //
 				injector.getInstance(TeleportScript.class) //

@@ -41,7 +41,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 						// .restitution(1f) //
 						.categoryBits(Collisions.Enemy) //
 						.maskBits(Collisions.None) //
-						.circleShape(0.25f)) //
+						.circleShape(0.2f)) //
 				.type(BodyType.DynamicBody) //
 				.position(spatial.getX(), spatial.getY()) //
 				.angle(spatial.getAngle()) //
@@ -54,7 +54,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(0.5f * MathUtils.random(3.5f, 7.5f)));
+		entity.addComponent(new LinearVelocityLimitComponent(0.25f * MathUtils.random(3.5f, 7.5f)));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //

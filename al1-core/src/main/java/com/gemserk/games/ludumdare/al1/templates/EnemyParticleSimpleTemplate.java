@@ -26,6 +26,7 @@ import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Groups;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
+import com.gemserk.games.ludumdare.al1.components.AliveComponent.State;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.FollowRandomTargetComponent;
 import com.gemserk.games.ludumdare.al1.scripts.AliveTimeScript;
@@ -51,6 +52,11 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 		@Override
 		public void update(World world, Entity e) {
+			
+			AliveComponent aliveComponent = Components.getAliveComponent(e);
+			if (aliveComponent.state == State.Spawning)
+				return;
+			
 			FollowRandomTargetComponent followRandomTargetComponent = Components.getFollowRandomTargetComponent(e);
 
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
@@ -90,7 +96,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 						// .restitution(1f) //
 						.categoryBits(Collisions.Enemy) //
 						.maskBits(Collisions.None) //
-						.circleShape(0.25f)) //
+						.circleShape(0.2f)) //
 				.type(BodyType.DynamicBody) //
 				.position(spatial.getX(), spatial.getY()) //
 				.angle(spatial.getAngle()) //
@@ -103,7 +109,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(0.5f * MathUtils.random(2.5f, 5f)));
+		entity.addComponent(new LinearVelocityLimitComponent(0.25f * MathUtils.random(2.5f, 5f)));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //

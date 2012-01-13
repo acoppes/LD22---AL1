@@ -14,6 +14,8 @@ import com.gemserk.games.ludumdare.al1.components.Components;
 public class StickControllerScript extends ScriptJavaImpl {
 
 	private final Vector2 tmp = new Vector2();
+	private final Vector2 newPosition = new Vector2();
+
 	private final Input input;
 
 	int touch = 0;
@@ -54,12 +56,27 @@ public class StickControllerScript extends ScriptJavaImpl {
 			tmp.set(stickPosition.x, stickPosition.y);
 			tmp.sub(x, y);
 
-			if (tmp.len() > radius * 0.5f) {
+			if (tmp.len() > radius) {
+
+				newPosition.set(tmp);
+				newPosition.nor().mul(radius);
+
+				newPosition.sub(tmp);
+				newPosition.add(stickPosition);
+
+				stickPosition.set(newPosition);
+
 				tmp.nor();
-				tmp.mul(radius * 0.5f);
+				tmp.mul(radius);
+
 			}
 
-			tmp.mul(-1f * 0.1f * 0.5f);
+			// if (tmp.len() > radius * 0.5f) {
+			// tmp.nor();
+			// tmp.mul(radius * 0.5f);
+			// }
+
+			tmp.mul(-1f * 0.1f * 0.15f);
 
 		}
 

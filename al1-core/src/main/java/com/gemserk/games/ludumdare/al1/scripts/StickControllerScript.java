@@ -21,7 +21,7 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 	public final Vector2 stickPosition = new Vector2();
 	public final Vector2 touchPosition = new Vector2();
-	
+
 	public boolean moving = false;
 	public float radius = 80f;
 
@@ -31,7 +31,7 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 	public StickControllerScript(Input input) {
 		pointerDownMonitor = LibgdxInputMappingBuilder.anyPointerButtonMonitor(input);
-		
+
 		pointerXCoordinateMonitor = LibgdxInputMappingBuilder.anyPointerXCoordinateMonitor(input);
 		pointerYCoordinateMonitor = LibgdxInputMappingBuilder.anyPointerYCoordinateMonitor(input);
 
@@ -41,15 +41,14 @@ public class StickControllerScript extends ScriptJavaImpl {
 	@Override
 	public void update(World world, Entity e) {
 		pointerDownMonitor.update();
-		
+
 		pointerXCoordinateMonitor.update();
 		pointerYCoordinateMonitor.update();
 
-//		float x = pointerXCoordinateMonitor.getValue();
-//		float y = Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue();
-		
-		touchPosition.set(pointerXCoordinateMonitor.getValue(), 
-				Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue());
+		// float x = pointerXCoordinateMonitor.getValue();
+		// float y = Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue();
+
+		touchPosition.set(pointerXCoordinateMonitor.getValue(), Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue());
 
 		tmp.set(0f, 0f);
 
@@ -77,14 +76,18 @@ public class StickControllerScript extends ScriptJavaImpl {
 				newPosition.add(stickPosition);
 
 				stickPosition.set(newPosition);
+
+				tmp.nor().mul(radius);
 			}
 
-			if (tmp.len() > radius * 0.75f) {
-				tmp.nor();
-				tmp.mul(radius * 0.75f);
-			}
+			// if (tmp.len() > radius * 0.75f) {
+			// tmp.nor();
+			// tmp.mul(radius * 0.75f);
+			// }
 
-			tmp.mul(-1f * 0.1f * 0.5f);
+			tmp.mul(-1f / radius);
+
+			// tmp.mul(-1f * 0.1f * 0.5f);
 
 		}
 

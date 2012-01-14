@@ -80,7 +80,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				.build();
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(0.75f * 6f));
+		entity.addComponent(new LinearVelocityLimitComponent(1f * 6f));
 
 		entity.addComponent(new TagComponent(Tags.MainCharacter));
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));

@@ -5,6 +5,8 @@ import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.gemserk.animation4j.interpolator.function.InterpolationFunction;
+import com.gemserk.animation4j.interpolator.function.InterpolationFunctions;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.componentsengine.input.AnalogInputMonitor;
 import com.gemserk.componentsengine.input.ButtonMonitor;
@@ -18,6 +20,8 @@ public class StickControllerScript extends ScriptJavaImpl {
 	private final Vector2 newPosition = new Vector2();
 
 	int touch = 0;
+
+	final InterpolationFunction interpolationFunction = InterpolationFunctions.easeOut();
 
 	public final Vector2 stickPosition = new Vector2();
 	public final Vector2 touchPosition = new Vector2();
@@ -45,10 +49,8 @@ public class StickControllerScript extends ScriptJavaImpl {
 		pointerXCoordinateMonitor.update();
 		pointerYCoordinateMonitor.update();
 
-		// float x = pointerXCoordinateMonitor.getValue();
-		// float y = Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue();
-
-		touchPosition.set(pointerXCoordinateMonitor.getValue(), Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue());
+		touchPosition.set(pointerXCoordinateMonitor.getValue(), // 
+				Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue());
 
 		tmp.set(0f, 0f);
 
@@ -80,15 +82,10 @@ public class StickControllerScript extends ScriptJavaImpl {
 				tmp.nor().mul(radius);
 			}
 
-			// if (tmp.len() > radius * 0.75f) {
-			// tmp.nor();
-			// tmp.mul(radius * 0.75f);
-			// }
+			float t = tmp.len() / radius;
+			float v = interpolationFunction.interpolate(t);
 
-			tmp.mul(-1f / radius);
-
-			// tmp.mul(-1f * 0.1f * 0.5f);
-
+			tmp.nor().mul(-v);
 		}
 
 		controller.direction.set(tmp);

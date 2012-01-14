@@ -49,12 +49,13 @@ public class StickControllerScript extends ScriptJavaImpl {
 		pointerXCoordinateMonitor.update();
 		pointerYCoordinateMonitor.update();
 
-		touchPosition.set(pointerXCoordinateMonitor.getValue(), // 
+		touchPosition.set(pointerXCoordinateMonitor.getValue(), //
 				Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue());
 
 		tmp.set(0f, 0f);
 
 		Controller controller = Components.getControllerComponent(e).controller;
+		controller.direction.set(0, 0);
 
 		if (pointerDownMonitor.isPressed()) {
 			stickPosition.set(touchPosition.x, touchPosition.y);
@@ -64,29 +65,41 @@ public class StickControllerScript extends ScriptJavaImpl {
 		if (pointerDownMonitor.isReleased())
 			moving = false;
 
-		if (moving) {
+		if (!moving)
+			return;
 
-			tmp.set(stickPosition.x, stickPosition.y);
-			tmp.sub(touchPosition.x, touchPosition.y);
+		tmp.set(stickPosition.x, stickPosition.y);
+		tmp.sub(touchPosition.x, touchPosition.y);
 
-			if (tmp.len() > radius) {
+		if (tmp.len() > radius) {
 
-				newPosition.set(tmp);
-				newPosition.nor().mul(radius);
+			newPosition.set(tmp);
+			newPosition.nor().mul(radius);
 
-				newPosition.sub(tmp);
-				newPosition.add(stickPosition);
+			newPosition.sub(tmp);
+			newPosition.add(stickPosition);
 
-				stickPosition.set(newPosition);
+			stickPosition.set(newPosition);
 
-				tmp.nor().mul(radius);
-			}
-
-			float t = tmp.len() / radius;
-			float v = interpolationFunction.interpolate(t);
-
-			tmp.nor().mul(-v);
+			tmp.nor().mul(radius);
 		}
+
+		float t = tmp.len() / radius;
+		float v = interpolationFunction.interpolate(t);
+
+		tmp.nor().mul(-v);
+
+		if (stickPosition.x + radius > Gdx.graphics.getWidth())
+			stickPosition.x = Gdx.graphics.getWidth() - radius;
+
+		if (stickPosition.x - radius < 0)
+			stickPosition.x = 0 + radius;
+
+		if (stickPosition.y + radius > Gdx.graphics.getHeight())
+			stickPosition.y = Gdx.graphics.getHeight() - radius;
+
+		if (stickPosition.y - radius < 0)
+			stickPosition.y = 0 + radius;
 
 		controller.direction.set(tmp);
 	}

@@ -235,12 +235,10 @@ public class PlayGameState extends GameStateImpl {
 
 		if (!stickControllerScript.moving)
 			return;
-
+		
 		Vector2 stickPosition = stickControllerScript.stickPosition;
 		Vector2 touchPosition = stickControllerScript.touchPosition;
-		
-//		ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
-		
+
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius * 0.1f, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(touchPosition.x, touchPosition.y, stickControllerScript.radius * 0.25f, Color.RED);

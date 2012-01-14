@@ -19,7 +19,9 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 	int touch = 0;
 
-	public Vector2 stickPosition = new Vector2();
+	public final Vector2 stickPosition = new Vector2();
+	public final Vector2 touchPosition = new Vector2();
+	
 	public boolean moving = false;
 	public float radius = 80f;
 
@@ -43,15 +45,18 @@ public class StickControllerScript extends ScriptJavaImpl {
 		pointerXCoordinateMonitor.update();
 		pointerYCoordinateMonitor.update();
 
-		float x = pointerXCoordinateMonitor.getValue();
-		float y = Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue();
+//		float x = pointerXCoordinateMonitor.getValue();
+//		float y = Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue();
+		
+		touchPosition.set(pointerXCoordinateMonitor.getValue(), 
+				Gdx.graphics.getHeight() - pointerYCoordinateMonitor.getValue());
 
 		tmp.set(0f, 0f);
 
 		Controller controller = Components.getControllerComponent(e).controller;
 
 		if (pointerDownMonitor.isPressed()) {
-			stickPosition.set(x, y);
+			stickPosition.set(touchPosition.x, touchPosition.y);
 			moving = true;
 		}
 
@@ -61,7 +66,7 @@ public class StickControllerScript extends ScriptJavaImpl {
 		if (moving) {
 
 			tmp.set(stickPosition.x, stickPosition.y);
-			tmp.sub(x, y);
+			tmp.sub(touchPosition.x, touchPosition.y);
 
 			if (tmp.len() > radius) {
 
@@ -79,7 +84,7 @@ public class StickControllerScript extends ScriptJavaImpl {
 				tmp.mul(radius * 0.75f);
 			}
 
-			tmp.mul(-1f * 0.1f * 0.2f);
+			tmp.mul(-1f * 0.1f * 0.5f);
 
 		}
 

@@ -18,7 +18,7 @@ public class MovementScript extends ScriptJavaImpl {
 		Controller controller = Components.getControllerComponent(e).controller;
 		
 		force.set(controller.direction);
-		force.mul(20f);
+		force.mul(30f);
 		
 		Physics physics = Components.getPhysicsComponent(e).getPhysics();
 		Body body = physics.getBody();

@@ -18,9 +18,14 @@ public class FollowMouseMovementScript2 extends ScriptJavaImpl {
 	public void update(World world, Entity e) {
 		int x = Gdx.input.getX();
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
+		
+		Controller controller = Components.getControllerComponent(e).controller;
+		controller.direction.set(0,0);
+		
+		if (!Gdx.input.isTouched())
+			return;
 
 		Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-		Controller controller = Components.getControllerComponent(e).controller;
 		CameraComponent cameraComponent = Components.getCameraComponent(e);
 
 		direction.set(x, y);

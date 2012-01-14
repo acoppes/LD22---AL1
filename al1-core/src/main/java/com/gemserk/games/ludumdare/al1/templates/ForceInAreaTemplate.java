@@ -70,9 +70,7 @@ public class ForceInAreaTemplate extends EntityTemplateImpl {
 
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new ScriptComponent(injector.getInstance(AreaForceScript.class)));
-		
 		entity.addComponent(new GroupComponent(Groups.AreaForce));
-		
 		entity.addComponent(new AreaForceComponent(force.x, force.y));
 	}
 

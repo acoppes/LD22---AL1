@@ -35,7 +35,7 @@ public class BounceWhenCollideScript extends ScriptJavaImpl {
 			Vector2 normal = contact.getNormal();
 			
 			impulse.set(normal);
-			impulse.mul(-5f);
+			impulse.mul(-20f);
 
 			Body body = physics.getBody();
 			

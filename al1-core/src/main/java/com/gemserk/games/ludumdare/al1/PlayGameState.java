@@ -141,7 +141,7 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
-				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(3, 6), 5f));
+				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(5, 10), 5f));
 				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
 			}
 		});
@@ -149,7 +149,7 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
-				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(2, 4), 2f));
+				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(4, 8), 2f));
 				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
 			}
 		});
@@ -237,8 +237,13 @@ public class PlayGameState extends GameStateImpl {
 			return;
 
 		Vector2 stickPosition = stickControllerScript.stickPosition;
-		ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
+		Vector2 touchPosition = stickControllerScript.touchPosition;
+		
+//		ImmediateModeRendererUtils.fillRectangle(stickPosition.x - 5f, stickPosition.y - 5f, stickPosition.x + 5f, stickPosition.y + 5f, Color.WHITE);
+		
+		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius * 0.1f, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
+		ImmediateModeRendererUtils.drawSolidCircle(touchPosition.x, touchPosition.y, stickControllerScript.radius * 0.25f, Color.RED);
 	}
 
 	@Override

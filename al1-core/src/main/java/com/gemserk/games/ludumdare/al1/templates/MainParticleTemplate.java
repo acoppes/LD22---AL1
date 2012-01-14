@@ -99,7 +99,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		// Input input = Gdx.input;
 
 		entity.addComponent(new ScriptComponent( //
-				// injector.getInstance(FollowMouseMovementScript2.class), //
+//				 injector.getInstance(FollowMouseMovementScript2.class), //
 				new StickControllerScript(input), //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class) //

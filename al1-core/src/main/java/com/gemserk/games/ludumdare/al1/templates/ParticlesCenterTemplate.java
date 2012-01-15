@@ -25,6 +25,7 @@ import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Events;
 import com.gemserk.games.ludumdare.al1.Groups;
 import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 import com.gemserk.resources.ResourceManager;
 
 public class ParticlesCenterTemplate extends EntityTemplateImpl {
@@ -49,7 +50,7 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
 			Body body = Components.getPhysicsComponent(e).getPhysics().getBody();
 
-			if (particles.size() < 2) {
+			if (particles.size() < 3) {
 				body.setTransform(0, 0, 0);
 				body.setActive(false);
 				return;
@@ -102,6 +103,12 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 
 				ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
 				eventManager.registerEvent(Events.ParticlesDestroyed, particles);
+				
+				for (int j = 0; j < particles.size(); j++) {
+					Entity particle = particles.get(j);
+					StoreComponent storeComponent = Components.getStoreComponent(particle);
+					storeComponent.store.free(particle);
+				}
 
 			}
 

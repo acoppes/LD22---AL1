@@ -14,6 +14,7 @@ import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent.State;
 import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 
 public class AliveTimeScript extends ScriptJavaImpl {
 
@@ -68,8 +69,11 @@ public class AliveTimeScript extends ScriptJavaImpl {
 			}
 		} else {
 			aliveComponent.dyingTime -= GlobalTime.getDelta();
-			if (aliveComponent.dyingTime <= 0f)
-				e.delete();
+			if (aliveComponent.dyingTime <= 0f) {
+				StoreComponent storeComponent = Components.getStoreComponent(e);
+				storeComponent.store.free(e);
+				// e.delete();
+			}
 		}
 	}
 

@@ -54,7 +54,7 @@ import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
 import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
-import com.gemserk.games.ludumdare.al1.templates.SuperMidPointTemplate;
+import com.gemserk.games.ludumdare.al1.templates.ParticlesCenterTemplate;
 
 public class PlayGameState extends GameStateImpl {
 
@@ -175,7 +175,7 @@ public class PlayGameState extends GameStateImpl {
 				.put("force", new Vector2(-100f, 0f)) //
 				);
 
-		entityFactory.instantiate(injector.getInstance(SuperMidPointTemplate.class));
+		entityFactory.instantiate(injector.getInstance(ParticlesCenterTemplate.class));
 
 		eventManager.register(Events.GameOver, new EventListener() {
 			@Override
@@ -184,6 +184,15 @@ public class PlayGameState extends GameStateImpl {
 						.disposeCurrent() //
 						.restartScreen() //
 						.parameter("score", (long) score).start();
+			}
+		});
+		
+		eventManager.register(Events.ParticlesDestroyed, new EventListener() {
+			@Override
+			public void onEvent(Event event) {
+				// depends on the type maybe and quantity...
+				ImmutableBag<Entity> particles = (ImmutableBag<Entity>) event.getSource();
+				score += 50 * particles.size();
 			}
 		});
 

@@ -4,5 +4,7 @@ public class Events {
 	
 	public static final String GameOver = "gameOver";
 	public static final String MainExploded = "mainExploded";
+	
+	public static final String ParticlesDestroyed = "particlesDestroyed";
 
 }

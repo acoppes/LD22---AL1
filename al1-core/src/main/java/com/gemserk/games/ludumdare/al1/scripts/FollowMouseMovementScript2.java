@@ -35,6 +35,8 @@ public class FollowMouseMovementScript2 extends ScriptJavaImpl {
 
 		if (direction.len() < 0.5f)
 			direction.set(0f, 0f);
+		else
+			direction.nor();
 
 		controller.direction.set(direction);
 	}

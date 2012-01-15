@@ -1,6 +1,8 @@
 package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
+import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,6 +15,7 @@ import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.components.TagComponent;
+import com.gemserk.commons.artemis.scripts.Script;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.CameraImpl;
@@ -25,6 +28,7 @@ import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
+import com.gemserk.games.ludumdare.al1.scripts.FollowMouseMovementScript2;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.resources.ResourceManager;
@@ -96,18 +100,17 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new ControllerComponent(new Controller()));
 
 		Input input = remoteInput;
-		// Input input = Gdx.input;
+
+		Script controllerScript = injector.getInstance(FollowMouseMovementScript2.class);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			controllerScript = new StickControllerScript(input);
+		}
 
 		entity.addComponent(new ScriptComponent( //
-//				 injector.getInstance(FollowMouseMovementScript2.class), //
-				new StickControllerScript(input), //
+				controllerScript, //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
 				injector.getInstance(MovementScript.class) //
-//				injector.getInstance(TeleportScript.class) //
 		));
-
-		// entity.addComponent(new ControllerComponent(new Controller()));
-		// entity.addComponent(new ShieldComponent(new Container(100f, 100f)));
 
 	}
 

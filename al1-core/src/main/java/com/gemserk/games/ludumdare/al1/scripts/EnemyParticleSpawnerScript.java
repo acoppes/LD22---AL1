@@ -44,7 +44,7 @@ public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 
 		EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
 
-		position.set(MathUtils.random(3f, 8f), 0f);
+		position.set(MathUtils.random(5f, 12f), 0f);
 		position.rotate(MathUtils.random(0, 360f));
 
 		entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//

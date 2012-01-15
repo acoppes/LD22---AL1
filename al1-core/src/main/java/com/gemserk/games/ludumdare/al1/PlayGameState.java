@@ -54,6 +54,7 @@ import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
 import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
+import com.gemserk.games.ludumdare.al1.templates.SuperMidPointTemplate;
 
 public class PlayGameState extends GameStateImpl {
 
@@ -174,6 +175,8 @@ public class PlayGameState extends GameStateImpl {
 				.put("force", new Vector2(-100f, 0f)) //
 				);
 
+		entityFactory.instantiate(injector.getInstance(SuperMidPointTemplate.class));
+
 		eventManager.register(Events.GameOver, new EventListener() {
 			@Override
 			public void onEvent(Event event) {
@@ -236,7 +239,7 @@ public class PlayGameState extends GameStateImpl {
 
 		if (!stickControllerScript.moving)
 			return;
-		
+
 		Vector2 stickPosition = stickControllerScript.stickPosition;
 		Vector2 touchPosition = stickControllerScript.touchPosition;
 

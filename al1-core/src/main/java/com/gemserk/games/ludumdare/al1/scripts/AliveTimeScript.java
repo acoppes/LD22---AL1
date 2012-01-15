@@ -23,11 +23,6 @@ public class AliveTimeScript extends ScriptJavaImpl {
 	@Override
 	public void init(World world, Entity e) {
 		AliveComponent aliveComponent = Components.getAliveComponent(e);
-		aliveComponent.state = State.Spawning;
-		aliveComponent.spawnTime = 1f;
-		aliveComponent.dyingTime = 1f;
-		// start the transition here?
-
 		SpriteComponent spriteComponent = Components.getSpriteComponent(e);
 		synchronizer.transition(Transitions.transition(spriteComponent.getColor(), LibgdxConverters.color()) //
 				.start(1f, 1f, 1f, 0f) //

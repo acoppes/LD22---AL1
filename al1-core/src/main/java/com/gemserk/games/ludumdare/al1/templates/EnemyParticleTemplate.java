@@ -1,8 +1,10 @@
 package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.GroupComponent;
@@ -12,6 +14,7 @@ import com.gemserk.commons.artemis.components.RenderableComponent;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
+import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
@@ -20,7 +23,10 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Groups;
+import com.gemserk.games.ludumdare.al1.Tags;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
+import com.gemserk.games.ludumdare.al1.components.AliveComponent.State;
+import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.scripts.AliveTimeScript;
 import com.gemserk.games.ludumdare.al1.scripts.BounceWhenCollideScript;
 import com.gemserk.games.ludumdare.al1.scripts.FollowMainCharacterScript;
@@ -31,6 +37,38 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 	Injector injector;
 	BodyBuilder bodyBuilder;
 	ResourceManager<String> resourceManager;
+
+	public static class RandomizeFollowParticleScript extends ScriptJavaImpl {
+
+		private final Vector2 position = new Vector2();
+
+		@Override
+		public void init(World world, Entity e) {
+			Entity mainCharacter = world.getTagManager().getEntity(Tags.MainCharacter);
+
+			if (mainCharacter != null) {
+				Spatial mainCharacterSpatial = Components.getSpatialComponent(mainCharacter).getSpatial();
+				Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+
+				// EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
+
+				position.set(MathUtils.random(5f, 12f), 0f);
+				position.rotate(MathUtils.random(0, 360f));
+
+				spatial.setPosition(mainCharacterSpatial.getX() + position.x, mainCharacterSpatial.getY() + position.y);
+			}
+
+			AliveComponent aliveComponent = Components.getAliveComponent(e);
+			aliveComponent.time = MathUtils.random(8f, 13f);
+			aliveComponent.spawnTime = 1f;
+			aliveComponent.dyingTime = 1f;
+			aliveComponent.state = State.Spawning;
+
+			LinearVelocityLimitComponent linearVelocityComponent = Components.getLinearVelocityComponent(e);
+			linearVelocityComponent.setLimit(0.6f * MathUtils.random(3.5f, 7.5f));
+		}
+
+	}
 
 	@Override
 	public void apply(Entity entity) {
@@ -54,10 +92,11 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(0.6f * MathUtils.random(3.5f, 7.5f)));
+		entity.addComponent(new LinearVelocityLimitComponent(1f));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //
+				injector.getInstance(RandomizeFollowParticleScript.class), //
 				injector.getInstance(FollowMainCharacterScript.class), //
 				injector.getInstance(AliveTimeScript.class), //
 				injector.getInstance(BounceWhenCollideScript.class)//
@@ -66,8 +105,9 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al2);
 		SpriteComponent spriteComponent = new SpriteComponent(sprite);
 
-		entity.addComponent(new AliveComponent(MathUtils.random(8f, 13f)));
+		entity.addComponent(new AliveComponent(1f));
 		entity.addComponent(spriteComponent);
 		entity.addComponent(new RenderableComponent(1));
+
 	}
 }

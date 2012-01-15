@@ -25,6 +25,7 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Groups;
+import com.gemserk.games.ludumdare.al1.Tags;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent;
 import com.gemserk.games.ludumdare.al1.components.AliveComponent.State;
 import com.gemserk.games.ludumdare.al1.components.Components;
@@ -52,11 +53,11 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 		@Override
 		public void update(World world, Entity e) {
-			
+
 			AliveComponent aliveComponent = Components.getAliveComponent(e);
 			if (aliveComponent.state == State.Spawning)
 				return;
-			
+
 			FollowRandomTargetComponent followRandomTargetComponent = Components.getFollowRandomTargetComponent(e);
 
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
@@ -87,6 +88,38 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 	}
 
+	public static class RandomizeParticleScript extends ScriptJavaImpl {
+
+		private final Vector2 position = new Vector2();
+
+		@Override
+		public void init(World world, Entity e) {
+			Entity mainCharacter = world.getTagManager().getEntity(Tags.MainCharacter);
+
+			if (mainCharacter != null) {
+				Spatial mainCharacterSpatial = Components.getSpatialComponent(mainCharacter).getSpatial();
+				Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+
+				// EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
+
+				position.set(MathUtils.random(5f, 12f), 0f);
+				position.rotate(MathUtils.random(0, 360f));
+
+				spatial.setPosition(mainCharacterSpatial.getX() + position.x, mainCharacterSpatial.getY() + position.y);
+			}
+
+			AliveComponent aliveComponent = Components.getAliveComponent(e);
+			aliveComponent.time = MathUtils.random(10f, 15f);
+			aliveComponent.spawnTime = 1f;
+			aliveComponent.dyingTime = 1f;
+			aliveComponent.state = State.Spawning;
+
+			LinearVelocityLimitComponent linearVelocityComponent = Components.getLinearVelocityComponent(e);
+			linearVelocityComponent.setLimit(0.6f * MathUtils.random(3.5f, 6.5f));
+		}
+
+	}
+
 	@Override
 	public void apply(Entity entity) {
 		Spatial spatial = parameters.get("spatial");
@@ -109,10 +142,11 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));
 
 		entity.addComponent(new PhysicsComponent(body));
-		entity.addComponent(new LinearVelocityLimitComponent(0.6f * MathUtils.random(3.5f, 6.5f)));
+		entity.addComponent(new LinearVelocityLimitComponent(1f));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new ScriptComponent( //
+				injector.getInstance(RandomizeParticleScript.class), //
 				injector.getInstance(FixedMovementScript.class), //
 				injector.getInstance(AliveTimeScript.class), //
 				injector.getInstance(BounceWhenCollideScript.class) //
@@ -127,7 +161,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.addComponent(spriteComponent);
 		entity.addComponent(new RenderableComponent(1));
 
-		entity.addComponent(new AliveComponent(MathUtils.random(10f, 15f)));
+		entity.addComponent(new AliveComponent(1f));
 		entity.addComponent(new FollowRandomTargetComponent());
 	}
 }

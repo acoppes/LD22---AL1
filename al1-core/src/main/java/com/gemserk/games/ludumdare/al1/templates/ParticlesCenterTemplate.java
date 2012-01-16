@@ -205,17 +205,26 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			if (convexHull2d.getPointsCount() < 3)
 				return;
 
-			if (bombBuildComponent.state == BombBuildState.TouchedCenter)
-				shapeRenderer.setColor(1f, 0f, 0f, 1f);
-			else
-				shapeRenderer.setColor(0f, 0f, 1f, 1f);
+			if (bombBuildComponent.state != BombBuildState.TouchedCenter)
+				return;
+			
+			// if (bombBuildComponent.state == BombBuildState.TouchedCenter)
+			// shapeRenderer.setColor(1f, 0f, 0f, 1f);
+			// else
+			// shapeRenderer.setColor(0f, 0f, 1f, 1f);
+			
+			shapeRenderer.setColor(1f, 0f, 0f, 1f);
 			
 			shapeRenderer.begin(ShapeType.Line);
 			for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
 				float x0 = convexHull2d.getX(i);
 				float y0 = convexHull2d.getY(i);
-				if (i + 1 == convexHull2d.getPointsCount())
+				if (i + 1 == convexHull2d.getPointsCount()) {
+					float x1 = convexHull2d.getX(0);
+					float y1 = convexHull2d.getY(0);
+					shapeRenderer.line(x0, y0, x1, y1);
 					break;
+				}
 				float x1 = convexHull2d.getX(i + 1);
 				float y1 = convexHull2d.getY(i + 1);
 				shapeRenderer.line(x0, y0, x1, y1);
@@ -234,7 +243,7 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 						.categoryBits(Collisions.Enemy) //
 						.maskBits(Collisions.Main) //
 						.sensor() //
-						.circleShape(0.25f)) //
+						.circleShape(0.1f)) //
 				.type(BodyType.DynamicBody) //
 				.position(0f, 0f) //
 				.userData(entity) //

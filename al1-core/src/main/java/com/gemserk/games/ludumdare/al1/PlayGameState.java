@@ -129,7 +129,7 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 
-		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
+//		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
 		scene.addRenderSystem(new Box2dLinearVelocityRenderSystem(worldCamera));
 		scene.addRenderSystem(new RenderScriptSystem());
 
@@ -202,7 +202,7 @@ public class PlayGameState extends GameStateImpl {
 			public void onEvent(Event event) {
 				// depends on the type maybe and quantity...
 				ImmutableBag<Entity> particles = (ImmutableBag<Entity>) event.getSource();
-				score += 50 * particles.size();
+				score += 5 * particles.size();
 			}
 		});
 

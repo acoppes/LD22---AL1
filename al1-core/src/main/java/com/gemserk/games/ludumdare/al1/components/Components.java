@@ -61,5 +61,12 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 	public static ConvexHullComponent getConvexHullComponent(Entity e) {
 		return convexHullComponentClass.cast(e.getComponent(convexHullComponentType));
 	}
+	
+	public static final Class<BombBuildComponent> bombBuildComponentClass = BombBuildComponent.class;
+	public static final ComponentType bombBuildComponentType = ComponentTypeManager.getTypeFor(bombBuildComponentClass);
+	
+	public static BombBuildComponent getBombBuildComponent(Entity e) {
+		return bombBuildComponentClass.cast(e.getComponent(bombBuildComponentType));
+	}
 }
 

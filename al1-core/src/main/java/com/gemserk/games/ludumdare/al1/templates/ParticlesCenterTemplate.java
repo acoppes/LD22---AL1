@@ -18,7 +18,6 @@ import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.artemis.utils.PhysicsUtils;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.box2d.Contacts;
-import com.gemserk.commons.gdx.box2d.Contacts.Contact;
 import com.gemserk.commons.gdx.games.Physics;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
@@ -28,6 +27,9 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Events;
 import com.gemserk.games.ludumdare.al1.Groups;
+import com.gemserk.games.ludumdare.al1.Tags;
+import com.gemserk.games.ludumdare.al1.components.BombBuildComponent;
+import com.gemserk.games.ludumdare.al1.components.BombBuildComponent.BombBuildState;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.ConvexHullComponent;
 import com.gemserk.games.ludumdare.al1.components.RenderScriptComponent;
@@ -56,7 +58,7 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
 			Body body = Components.getPhysicsComponent(e).getPhysics().getBody();
 
-			if (particles.size() < 3) {
+			if (particles.size() < 2) {
 				body.setTransform(0, 0, 0);
 				body.setActive(false);
 				return;
@@ -87,38 +89,20 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 		@Override
 		public void update(World world, Entity e) {
 
-			Physics physics = Components.getPhysicsComponent(e).getPhysics();
-			Body body = physics.getBody();
-			if (!body.isActive())
+			BombBuildComponent bombBuildComponent = Components.getBombBuildComponent(e);
+			if (!bombBuildComponent.shouldExplode)
 				return;
 
-			Contacts contacts = physics.getContact();
-			if (!contacts.isInContact())
-				return;
+			bombBuildComponent.shouldExplode = false;
 
-			for (int i = 0; i < contacts.getContactCount(); i++) {
-				Contact contact = contacts.getContact(i);
-				Entity otherEntity = (Entity) contact.getOtherFixture().getBody().getUserData();
+			ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
+			eventManager.registerEvent(Events.ParticlesDestroyed, particles);
 
-				if (otherEntity == null)
-					continue;
-
-				// assuming the other entity is the main particle because the collision flags...
-
-				// kill all particles
-
-				ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
-				eventManager.registerEvent(Events.ParticlesDestroyed, particles);
-				
-				for (int j = 0; j < particles.size(); j++) {
-					Entity particle = particles.get(j);
-					StoreComponent storeComponent = Components.getStoreComponent(particle);
-					storeComponent.store.free(particle);
-				}
-
+			for (int j = 0; j < particles.size(); j++) {
+				Entity particle = particles.get(j);
+				StoreComponent storeComponent = Components.getStoreComponent(particle);
+				storeComponent.store.free(particle);
 			}
-
-			PhysicsUtils.releaseContacts(contacts);
 
 		}
 
@@ -130,7 +114,7 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 		public void update(World world, Entity e) {
 			ConvexHullComponent convexHullComponent = Components.getConvexHullComponent(e);
 			ConvexHull2d convexHull2d = convexHullComponent.convexHull2d;
-			
+
 			ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
 
 			for (int i = 0; i < particles.size(); i++) {
@@ -139,38 +123,93 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 				convexHull2d.add(spatial.getX(), spatial.getY());
 			}
 
-			convexHull2d.recalculate();
+			BombBuildComponent bombBuildComponent = Components.getBombBuildComponent(e);
+
+			if (!convexHull2d.recalculate()) {
+				bombBuildComponent.state = BombBuildState.None;
+				return;
+			}
+
+			Entity mainCharacter = world.getTagManager().getEntity(Tags.MainCharacter);
+
+			if (mainCharacter == null)
+				return;
+
+			Spatial spatial = Components.getSpatialComponent(mainCharacter).getSpatial();
+
+			if (bombBuildComponent.state == BombBuildState.None) {
+
+				if (convexHull2d.inside(spatial.getX(), spatial.getY())) {
+					bombBuildComponent.state = BombBuildState.Inside;
+					System.out.println("inside");
+				}
+
+			} else if (bombBuildComponent.state == BombBuildState.Inside) {
+
+				if (!convexHull2d.inside(spatial.getX(), spatial.getY())) {
+					bombBuildComponent.state = BombBuildState.None;
+					bombBuildComponent.shouldExplode = false;
+					System.out.println("outside");
+				} else {
+
+					Physics physics = Components.getPhysicsComponent(e).getPhysics();
+
+					Contacts contacts = physics.getContact();
+					if (contacts.isInContact()) {
+						bombBuildComponent.state = BombBuildState.TouchedCenter;
+						PhysicsUtils.releaseContacts(contacts);
+						System.out.println("touched center");
+					}
+
+				}
+
+			} else if (bombBuildComponent.state == BombBuildState.TouchedCenter) {
+
+				if (!convexHull2d.inside(spatial.getX(), spatial.getY())) {
+					bombBuildComponent.state = BombBuildState.None;
+					bombBuildComponent.shouldExplode = true;
+					System.out.println("outside, should explode!!");
+				}
+
+			}
+
 		}
 
 	}
 
-
 	public static class RenderCenterScript extends ScriptJavaImpl {
-		
+
 		ShapeRenderer shapeRenderer;
 
 		@Override
 		public void update(World world, Entity e) {
 			Physics physics = Components.getPhysicsComponent(e).getPhysics();
 			Body body = physics.getBody();
-			
+
 			if (!body.isActive())
 				return;
-			
+
+			BombBuildComponent bombBuildComponent = Components.getBombBuildComponent(e);
+
 			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-			
+
 			shapeRenderer.setColor(1f, 1f, 0f, 1f);
+			
 			shapeRenderer.begin(ShapeType.FilledCircle);
 			shapeRenderer.filledCircle(spatial.getX(), spatial.getY(), 0.1f, 20);
 			shapeRenderer.end();
-			
+
 			ConvexHullComponent convexHullComponent = Components.getConvexHullComponent(e);
 			ConvexHull2d convexHull2d = convexHullComponent.convexHull2d;
-			
-			if (convexHull2d.getPointsCount() < 4)
+
+			if (convexHull2d.getPointsCount() < 3)
 				return;
 
-			shapeRenderer.setColor(0f, 0f, 1f, 1f);
+			if (bombBuildComponent.state == BombBuildState.TouchedCenter)
+				shapeRenderer.setColor(1f, 0f, 0f, 1f);
+			else
+				shapeRenderer.setColor(0f, 0f, 1f, 1f);
+			
 			shapeRenderer.begin(ShapeType.Line);
 			for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
 				float x0 = convexHull2d.getX(i);
@@ -182,12 +221,11 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 				shapeRenderer.line(x0, y0, x1, y1);
 			}
 			shapeRenderer.end();
-			
+
 		}
 
 	}
 
-	
 	@Override
 	public void apply(Entity entity) {
 
@@ -212,9 +250,11 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 				injector.getInstance(UpdatePositionScript.class), //
 				injector.getInstance(RecalculateConvexHullScript.class) //
 		));
-		
+
 		entity.addComponent(new RenderScriptComponent(injector.getInstance(RenderCenterScript.class)));
 		entity.addComponent(new ConvexHullComponent(new ConvexHull2dImpl(10)));
+
+		entity.addComponent(new BombBuildComponent(BombBuildState.None));
 	}
 
 }

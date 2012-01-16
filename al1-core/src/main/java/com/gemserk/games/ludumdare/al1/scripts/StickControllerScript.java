@@ -21,7 +21,8 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 	int touch = 0;
 
-	final InterpolationFunction interpolationFunction = InterpolationFunctions.easeOut();
+//	final InterpolationFunction interpolationFunction = InterpolationFunctions.easeOut();
+	final InterpolationFunction interpolationFunction = InterpolationFunctions.linear();
 
 	public final Vector2 stickPosition = new Vector2();
 	public final Vector2 touchPosition = new Vector2();

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.WorldWrapper;
@@ -38,7 +40,10 @@ import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
+import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialImpl;
+import com.gemserk.commons.gdx.graphics.ConvexHull2d;
+import com.gemserk.commons.gdx.graphics.ConvexHull2dCalculationImpl;
 import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
 import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
@@ -68,10 +73,13 @@ public class PlayGameState extends GameStateImpl {
 
 	float score;
 	SpriteBatch spriteBatch;
+	ShapeRenderer shapeRenderer;
 	BitmapFont font;
 	CustomDecimalFormat customDecimalFormat;
 
 	Synchronizer synchronizer;
+	
+	ConvexHull2d convexHull2d;
 
 	@Override
 	public void init() {
@@ -202,6 +210,10 @@ public class PlayGameState extends GameStateImpl {
 		font = new BitmapFont();
 
 		customDecimalFormat = new CustomDecimalFormat(5);
+		
+		shapeRenderer = new ShapeRenderer();
+		
+		convexHull2d = new ConvexHull2dCalculationImpl(10);
 	}
 
 	@Override
@@ -227,6 +239,36 @@ public class PlayGameState extends GameStateImpl {
 		spriteBatch.end();
 
 		renderMoveableStickOnScreen();
+		
+		ImmutableBag<Entity> particles = scene.getWorld().getGroupManager().getEntities(Groups.EnemyCharacter);
+		
+		for (int i = 0; i < particles.size(); i++) {
+			Entity particle = particles.get(i);
+			Spatial spatial = Components.getSpatialComponent(particle).getSpatial();
+			convexHull2d.add(spatial.getX(), spatial.getY());
+		}
+		
+		convexHull2d.recalculate();
+		
+		if (convexHull2d.getPointsCount() < 3)
+			return;
+		
+		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
+		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
+		
+		shapeRenderer.setColor(1f, 1f, 1f, 1f);
+		shapeRenderer.begin(ShapeType.Line);
+		for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
+			float x0 = convexHull2d.getX(i);
+			float y0 = convexHull2d.getY(i);
+			if (i + 1 == convexHull2d.getPointsCount())
+				break;
+			float x1 = convexHull2d.getX(i + 1);
+			float y1 = convexHull2d.getY(i + 1);
+			shapeRenderer.line(x0, y0, x1, y1);
+		}
+		shapeRenderer.end();
+		
 
 	}
 

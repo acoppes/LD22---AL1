@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -21,6 +22,7 @@ import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
+import com.gemserk.commons.gdx.math.MathUtils2;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.GameResources;
@@ -91,6 +93,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 	public static class RandomizeParticleScript extends ScriptJavaImpl {
 
 		private final Vector2 position = new Vector2();
+		private final Rectangle worldRectangle = new Rectangle(-7.5f, -5.5f, 15f, 11f);
 
 		@Override
 		public void init(World world, Entity e) {
@@ -105,7 +108,11 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 				position.set(MathUtils.random(5f, 12f), 0f);
 				position.rotate(MathUtils.random(0, 360f));
 
-				spatial.setPosition(mainCharacterSpatial.getX() + position.x, mainCharacterSpatial.getY() + position.y);
+				position.add(mainCharacterSpatial.getX(), mainCharacterSpatial.getY());
+
+				MathUtils2.truncate(position, worldRectangle);
+
+				spatial.setPosition(position.x, position.y);
 			}
 
 			AliveComponent aliveComponent = Components.getAliveComponent(e);

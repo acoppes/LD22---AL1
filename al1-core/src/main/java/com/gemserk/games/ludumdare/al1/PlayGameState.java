@@ -55,6 +55,7 @@ import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
+import com.gemserk.games.ludumdare.al1.systems.RenderScriptSystem;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
@@ -87,6 +88,7 @@ public class PlayGameState extends GameStateImpl {
 		final Injector injector = this.injector.createChildInjector();
 
 		synchronizer = new Synchronizer();
+		shapeRenderer = new ShapeRenderer();
 
 		float gameZoom = Gdx.graphics.getHeight() / 480f;
 
@@ -113,6 +115,7 @@ public class PlayGameState extends GameStateImpl {
 		injector.bind("physicsWorld", physicsWorld);
 		injector.bind("bodyBuilder", bodyBuilder);
 		injector.bind("synchronizer", synchronizer);
+		injector.bind("shapeRenderer", shapeRenderer);
 
 		scene.addUpdateSystem(new ScriptSystem());
 		scene.addUpdateSystem(new TagSystem());
@@ -130,6 +133,7 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
 		scene.addRenderSystem(new Box2dLinearVelocityRenderSystem(worldCamera));
+		scene.addRenderSystem(new RenderScriptSystem());
 
 		scene.init();
 
@@ -211,8 +215,6 @@ public class PlayGameState extends GameStateImpl {
 
 		customDecimalFormat = new CustomDecimalFormat(5);
 
-		shapeRenderer = new ShapeRenderer();
-
 		convexHull2d = new ConvexHull2dCalculationImpl(10);
 	}
 
@@ -230,6 +232,9 @@ public class PlayGameState extends GameStateImpl {
 	@Override
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
+		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
 
 		renderConvexHull();
 
@@ -269,9 +274,6 @@ public class PlayGameState extends GameStateImpl {
 
 		if (convexHull2d.getPointsCount() < 4)
 			return;
-
-		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
-		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
 
 		shapeRenderer.setColor(0f, 0f, 1f, 0.25f);
 		shapeRenderer.begin(ShapeType.Line);

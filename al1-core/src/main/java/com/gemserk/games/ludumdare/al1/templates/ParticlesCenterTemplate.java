@@ -3,6 +3,8 @@ package com.gemserk.games.ludumdare.al1.templates;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.ImmutableBag;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -25,6 +27,7 @@ import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Events;
 import com.gemserk.games.ludumdare.al1.Groups;
 import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.RenderScriptComponent;
 import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 import com.gemserk.resources.ResourceManager;
 
@@ -118,6 +121,30 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 
 	}
 
+
+	public static class RenderCenterScript extends ScriptJavaImpl {
+		
+		ShapeRenderer shapeRenderer;
+
+		@Override
+		public void update(World world, Entity e) {
+			Physics physics = Components.getPhysicsComponent(e).getPhysics();
+			Body body = physics.getBody();
+			
+			if (!body.isActive())
+				return;
+			
+			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+			
+			shapeRenderer.setColor(1f, 1f, 0f, 1f);
+			shapeRenderer.begin(ShapeType.FilledCircle);
+			shapeRenderer.filledCircle(spatial.getX(), spatial.getY(), 0.1f, 20);
+			shapeRenderer.end();
+		}
+
+	}
+
+	
 	@Override
 	public void apply(Entity entity) {
 
@@ -141,6 +168,8 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 				injector.getInstance(KillParticlesOnMainParticleContactScript.class), //
 				injector.getInstance(UpdatePositionScript.class) //
 		));
+		
+		entity.addComponent(new RenderScriptComponent(injector.getInstance(RenderCenterScript.class)));
 	}
 
 }

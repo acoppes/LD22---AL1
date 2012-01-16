@@ -234,8 +234,6 @@ public class PlayGameState extends GameStateImpl {
 		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
 
-		// renderConvexHull();
-
 		scene.render();
 
 		normalCamera.apply();
@@ -245,53 +243,7 @@ public class PlayGameState extends GameStateImpl {
 		spriteBatch.end();
 
 		renderMoveableStickOnScreen();
-
-		// Entity mainCharacter = scene.getWorld().getTagManager().getEntity(Tags.MainCharacter);
-		//
-		// if (mainCharacter == null)
-		// return;
-		//
-		// Spatial spatial = Components.getSpatialComponent(mainCharacter).getSpatial();
-		//
-		// if (convexHull2d.inside(spatial.getX(), spatial.getY())) {
-		// System.out.println("inside!!");
-		// }
-
 	}
-
-	// private void renderConvexHull() {
-	// ImmutableBag<Entity> particles = scene.getWorld().getGroupManager().getEntities(Groups.EnemyCharacter);
-	//
-	// for (int i = 0; i < particles.size(); i++) {
-	// Entity particle = particles.get(i);
-	// Spatial spatial = Components.getSpatialComponent(particle).getSpatial();
-	// convexHull2d.add(spatial.getX(), spatial.getY());
-	// }
-	//
-	// convexHull2d.recalculate();
-	//
-	// if (convexHull2d.getPointsCount() < 4)
-	// return;
-	//
-	// shapeRenderer.setColor(0f, 0f, 1f, 0.25f);
-	// shapeRenderer.begin(ShapeType.Line);
-	// for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
-	// float x0 = convexHull2d.getX(i);
-	// float y0 = convexHull2d.getY(i);
-	// if (i + 1 == convexHull2d.getPointsCount())
-	// break;
-	// float x1 = convexHull2d.getX(i + 1);
-	// float y1 = convexHull2d.getY(i + 1);
-	// shapeRenderer.line(x0, y0, x1, y1);
-	// // if (i + 2 == convexHull2d.getPointsCount())
-	// // break;
-	// // float x2 = convexHull2d.getX(i + 2);
-	// // float y2 = convexHull2d.getY(i + 2);
-	// // // shapeRenderer.filledTriangle(x0, y0, x1, y1, x2, y2);
-	// // shapeRenderer.triangle(x0, y0, x1, y1, x2, y2);
-	// }
-	// shapeRenderer.end();
-	// }
 
 	private void renderMoveableStickOnScreen() {
 		Entity mainCharacter = scene.getWorld().getTagManager().getEntity(Tags.MainCharacter);

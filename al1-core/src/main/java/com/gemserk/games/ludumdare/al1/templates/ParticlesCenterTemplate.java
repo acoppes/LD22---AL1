@@ -22,11 +22,14 @@ import com.gemserk.commons.gdx.box2d.Contacts.Contact;
 import com.gemserk.commons.gdx.games.Physics;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
+import com.gemserk.commons.gdx.graphics.ConvexHull2d;
+import com.gemserk.commons.gdx.graphics.ConvexHull2dImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.ludumdare.al1.Collisions;
 import com.gemserk.games.ludumdare.al1.Events;
 import com.gemserk.games.ludumdare.al1.Groups;
 import com.gemserk.games.ludumdare.al1.components.Components;
+import com.gemserk.games.ludumdare.al1.components.ConvexHullComponent;
 import com.gemserk.games.ludumdare.al1.components.RenderScriptComponent;
 import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 import com.gemserk.resources.ResourceManager;
@@ -120,6 +123,26 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 		}
 
 	}
+	
+	public static class RecalculateConvexHullScript extends ScriptJavaImpl {
+
+		@Override
+		public void update(World world, Entity e) {
+			ConvexHullComponent convexHullComponent = Components.getConvexHullComponent(e);
+			ConvexHull2d convexHull2d = convexHullComponent.convexHull2d;
+			
+			ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
+
+			for (int i = 0; i < particles.size(); i++) {
+				Entity particle = particles.get(i);
+				Spatial spatial = Components.getSpatialComponent(particle).getSpatial();
+				convexHull2d.add(spatial.getX(), spatial.getY());
+			}
+
+			convexHull2d.recalculate();
+		}
+
+	}
 
 
 	public static class RenderCenterScript extends ScriptJavaImpl {
@@ -140,6 +163,26 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			shapeRenderer.begin(ShapeType.FilledCircle);
 			shapeRenderer.filledCircle(spatial.getX(), spatial.getY(), 0.1f, 20);
 			shapeRenderer.end();
+			
+			ConvexHullComponent convexHullComponent = Components.getConvexHullComponent(e);
+			ConvexHull2d convexHull2d = convexHullComponent.convexHull2d;
+			
+			if (convexHull2d.getPointsCount() < 4)
+				return;
+
+			shapeRenderer.setColor(0f, 0f, 1f, 1f);
+			shapeRenderer.begin(ShapeType.Line);
+			for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
+				float x0 = convexHull2d.getX(i);
+				float y0 = convexHull2d.getY(i);
+				if (i + 1 == convexHull2d.getPointsCount())
+					break;
+				float x1 = convexHull2d.getX(i + 1);
+				float y1 = convexHull2d.getY(i + 1);
+				shapeRenderer.line(x0, y0, x1, y1);
+			}
+			shapeRenderer.end();
+			
 		}
 
 	}
@@ -166,10 +209,12 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 
 		entity.addComponent(new ScriptComponent( //
 				injector.getInstance(KillParticlesOnMainParticleContactScript.class), //
-				injector.getInstance(UpdatePositionScript.class) //
+				injector.getInstance(UpdatePositionScript.class), //
+				injector.getInstance(RecalculateConvexHullScript.class) //
 		));
 		
 		entity.addComponent(new RenderScriptComponent(injector.getInstance(RenderCenterScript.class)));
+		entity.addComponent(new ConvexHullComponent(new ConvexHull2dImpl(10)));
 	}
 
 }

@@ -55,5 +55,11 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 		return storeComponentClass.cast(e.getComponent(storeComponentType));
 	}
 	
+	public static final Class<ConvexHullComponent> convexHullComponentClass = ConvexHullComponent.class;
+	public static final ComponentType convexHullComponentType = ComponentTypeManager.getTypeFor(convexHullComponentClass);
+	
+	public static ConvexHullComponent getConvexHullComponent(Entity e) {
+		return convexHullComponentClass.cast(e.getComponent(convexHullComponentType));
+	}
 }
 

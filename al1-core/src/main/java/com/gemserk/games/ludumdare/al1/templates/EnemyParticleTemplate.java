@@ -43,7 +43,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 	public static class RandomizeFollowParticleScript extends ScriptJavaImpl {
 
 		private final Vector2 position = new Vector2();
-		private final Rectangle worldRectangle = new Rectangle(-7.5f, -5.5f, 15f, 11f);
+		private final Rectangle worldRectangle = new Rectangle(-7.5f, -5f, 15f, 10f);
 
 		@Override
 		public void init(World world, Entity e) {

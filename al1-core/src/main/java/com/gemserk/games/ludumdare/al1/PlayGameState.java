@@ -250,7 +250,7 @@ public class PlayGameState extends GameStateImpl {
 		
 		convexHull2d.recalculate();
 		
-		if (convexHull2d.getPointsCount() < 3)
+		if (convexHull2d.getPointsCount() < 4)
 			return;
 		
 		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
